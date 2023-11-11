@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ResponseHandler } from 'src/common/response-handler';
-import { DoctorService } from './doctor.service';
 import { Roles } from './entities/role.entity';
 import { User } from './entities/user.entity';
 import { UserDetails } from './entities/userDetails.entity';
 import { DoctorMapper } from './mapper/doctor.mapper';
+import { NurseMapper } from './mapper/nurser.mapper';
+import { PatientMapper } from './mapper/patient.mapper';
 import { UserUpdateMapper } from './mapper/userUpdate.mapper';
 import { RolesSeeder } from './seeder/roles.seeder';
+import { DoctorService } from './services/doctor.service';
+import { NurseService } from './services/nurse.service';
+import { PatientService } from './services/patient.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -21,6 +25,10 @@ import { UserService } from './user.service';
     RolesSeeder,
     DoctorMapper,
     ResponseHandler,
+    NurseMapper,
+    NurseService,
+    PatientMapper,
+    PatientService,
   ],
   exports: [
     UserService,
@@ -28,6 +36,10 @@ import { UserService } from './user.service';
     RolesSeeder,
     DoctorService,
     DoctorMapper,
+    NurseMapper,
+    NurseService,
+    PatientMapper,
+    PatientService,
   ],
 })
 export class UserModule {}

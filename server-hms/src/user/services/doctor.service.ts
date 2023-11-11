@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseHandler } from 'src/common/response-handler';
 import { CreateDoctorDto } from 'src/manager/dto/create-doctor.dto';
 import { UpdateDoctorDto } from 'src/manager/dto/update-doctor.dto';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { DoctorMapper } from './mapper/doctor.mapper';
+import { Not, Repository } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { DoctorMapper } from '../mapper/doctor.mapper';
 
 @Injectable()
 export class DoctorService {
@@ -13,9 +13,9 @@ export class DoctorService {
     @InjectRepository(User) private userRepository: Repository<User>,
     private readonly doctorMapper: DoctorMapper,
   ) {}
-  create(dto: CreateDoctorDto) {
+  async create(dto: CreateDoctorDto) {
     try {
-      const exits = this.userRepository.findOne({
+      const exits = await this.userRepository.findOne({
         where: { email: dto.email },
       });
       if (exits) {
@@ -26,7 +26,7 @@ export class DoctorService {
       }
       const doctor = this.doctorMapper.dtoToEntity(dto);
       const entity = this.userRepository.create(doctor);
-      this.userRepository.save(entity);
+      await this.userRepository.save(entity);
       return new ResponseHandler(
         'Doctor Created Successfully',
         HttpStatus.CREATED,
@@ -43,7 +43,7 @@ export class DoctorService {
   async findAll() {
     try {
       const allDoctor = await this.userRepository.find({
-        where: { deleted_at: null },
+        where: { deleted_at: null, role_id: 3 },
         relations: {
           department: true,
           userDetails: true,
@@ -81,6 +81,20 @@ export class DoctorService {
   async update(dto: UpdateDoctorDto) {
     try {
       const id = dto.id;
+      const emailCheck = this.userRepository.findOne({
+        where: {
+          role_id: 3,
+          is_active: true,
+          email: dto.email,
+          id: Not(dto.id),
+        },
+      });
+      if (emailCheck) {
+        return new ResponseHandler(
+          'Doctor with the same email already exist',
+          HttpStatus.CONFLICT,
+        );
+      }
       const user = await this.userRepository.findOne({
         where: { id: id, deleted_at: null, role_id: 3, is_active: true },
       });
@@ -93,7 +107,7 @@ export class DoctorService {
       const doctor = this.doctorMapper.dtoToEntityForUpdate(dto, user);
       console.log(doctor);
       const entity = this.userRepository.create(doctor);
-      this.userRepository.save(entity);
+      await this.userRepository.save(entity);
       return new ResponseHandler('Doctor Updated Successfully', HttpStatus.OK);
     } catch (err) {
       return new ResponseHandler(
@@ -109,15 +123,12 @@ export class DoctorService {
   private currentUserId: number;
   private currentUserRole: number;
 
-  getUserByEmail(email: string): Promise<User> {
-    return this.userRepository
-      .findOne({
-        where: {
-          email: email,
-        },
-      })
-      .then((user) => {
-        return user;
-      });
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+    return user;
   }
 }

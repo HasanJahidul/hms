@@ -1,15 +1,21 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseHandler } from 'src/common/response-handler';
-import { DoctorService } from 'src/user/doctor.service';
 import { User } from 'src/user/entities/user.entity';
 import { UserUpdateMapper } from 'src/user/mapper/userUpdate.mapper';
+import { DoctorService } from 'src/user/services/doctor.service';
+import { NurseService } from 'src/user/services/nurse.service';
+import { PatientService } from 'src/user/services/patient.service';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { CreateManagerDto } from './dto/create-manager.dto';
+import { CreateNurseDto } from './dto/create-nurse.dto';
+import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
+import { UpdateNurseDto } from './dto/update-nurse.dto';
+import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Manager } from './entities/manager.entity';
 
 @Injectable()
@@ -18,6 +24,9 @@ export class ManagerService {
     private readonly userService: UserService,
     private readonly doctorService: DoctorService,
     private readonly userUpdateMapper: UserUpdateMapper,
+    private readonly patientService: PatientService,
+    private readonly nurseService: NurseService,
+
     private readonly responseHandler: ResponseHandler,
 
     @InjectRepository(Manager)
@@ -49,6 +58,20 @@ export class ManagerService {
   async update(dto: UpdateManagerDto) {
     try {
       const id = this.userService.getCurrentUserId();
+      const emailCheck = this.userRepository.findOne({
+        where: {
+          role_id: 4,
+          is_active: true,
+          email: dto.email,
+          id: Not(id),
+        },
+      });
+      if (emailCheck) {
+        return new ResponseHandler(
+          'Manager with the same email already exist',
+          HttpStatus.CONFLICT,
+        );
+      }
       const user = await this.userRepository.findOne({
         where: { id },
         relations: ['userDetails'],
@@ -78,5 +101,40 @@ export class ManagerService {
   }
   updateDoctor(updateDoctorDto: UpdateDoctorDto) {
     return this.doctorService.update(updateDoctorDto);
+  }
+  // nurse
+  async createNurse(dto: CreateNurseDto) {
+    try {
+      return this.nurseService.create(dto);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  findAllNurse() {
+    return this.nurseService.findAll();
+  }
+  findOneNurse(id: number) {
+    return this.nurseService.findOne(id);
+  }
+  updateNurse(updateDoctorDto: UpdateNurseDto) {
+    return this.nurseService.update(updateDoctorDto);
+  }
+
+  // patient
+  async createPatient(dto: CreatePatientDto) {
+    try {
+      return this.nurseService.create(dto);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  findAllPatient() {
+    return this.nurseService.findAll();
+  }
+  findOnePatient(id: number) {
+    return this.nurseService.findOne(id);
+  }
+  updatePatient(updateDoctorDto: UpdatePatientDto) {
+    return this.nurseService.update(updateDoctorDto);
   }
 }

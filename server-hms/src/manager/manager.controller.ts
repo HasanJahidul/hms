@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
@@ -11,8 +10,12 @@ import {
 } from '@nestjs/common';
 import { SessionGuard } from 'src/auth/auth.guards';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
+import { CreateNurseDto } from './dto/create-nurse.dto';
+import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
+import { UpdateNurseDto } from './dto/update-nurse.dto';
+import { UpdatePatientDto } from './dto/update-patient.dto';
 import { RoleGuard } from './manager.guard';
 import { ManagerService } from './manager.service';
 
@@ -47,8 +50,39 @@ export class ManagerController {
   updateDoctorProfile(@Body() dto: UpdateDoctorDto) {
     return this.managerService.updateDoctor(dto);
   }
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.managerService.remove(+id);
+  // nurse
+  @Post('nurse')
+  createNurse(@Body() dto: CreateNurseDto) {
+    return this.managerService.createNurse(dto);
+  }
+  @Get('nurse/list')
+  findAllNurse() {
+    return this.managerService.findAllNurse();
+  }
+  @Get('/nurse')
+  findOneNurse(@Query('id') id) {
+    return this.managerService.findOneNurse(+id);
+  }
+  @Put('nurse/profile')
+  updateNurseProfile(@Body() dto: UpdateNurseDto) {
+    return this.managerService.updateNurse(dto);
+  }
+
+  // patient
+  @Post('patient')
+  createPatient(@Body() dto: CreatePatientDto) {
+    return this.managerService.createPatient(dto);
+  }
+  @Get('patient/list')
+  findAllPatient() {
+    return this.managerService.findAllPatient();
+  }
+  @Get('/patient')
+  findOnePatient(@Query('id') id) {
+    return this.managerService.findOnePatient(+id);
+  }
+  @Put('patient/profile')
+  updatePatientProfile(@Body() dto: UpdatePatientDto) {
+    return this.managerService.updatePatient(dto);
   }
 }

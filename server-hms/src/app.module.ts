@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { DepartmentModule } from './department/department.module';
 import { ManagerModule } from './manager/manager.module';
-import { PatientModule } from './patient/patient.module';
 import { SeederModule } from './seeder/seeder.module';
 import { UserModule } from './user/user.module';
 
@@ -26,7 +25,6 @@ import { UserModule } from './user/user.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    PatientModule,
     DepartmentModule,
   ],
   controllers: [AppController],
