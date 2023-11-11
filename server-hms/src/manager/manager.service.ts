@@ -123,18 +123,18 @@ export class ManagerService {
   // patient
   async createPatient(dto: CreatePatientDto) {
     try {
-      return this.nurseService.create(dto);
+      return this.patientService.create(dto);
     } catch (e) {
       console.log(e);
     }
   }
   findAllPatient() {
-    return this.nurseService.findAll();
+    return this.patientService.findAll();
   }
   findOnePatient(id: number) {
-    return this.nurseService.findOne(id);
+    return this.patientService.findOne(id);
   }
   updatePatient(updateDoctorDto: UpdatePatientDto) {
-    return this.nurseService.update(updateDoctorDto);
+    return this.patientService.update(updateDoctorDto);
   }
 }

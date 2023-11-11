@@ -8,7 +8,6 @@ export class UserUpdateMapper {
     dto: UpdateUserDto | UpdateManagerDto | CreateDoctorDto,
     user: User,
   ) {
-    // if dto has email property then create user entity
     const entity = user;
     const userDetails = user.userDetails;
     if (dto.email) {

@@ -3,7 +3,6 @@ import { DepartmentSeeder } from 'src/department/seeder/department.seeder';
 import { ServiceSeeder } from 'src/department/seeder/service.seeder';
 import { RolesSeeder } from 'src/user/seeder/roles.seeder';
 import { Seeder } from './seeder.interface';
-// Import your seeders
 
 @Injectable()
 export class SeederManager {
@@ -14,7 +13,7 @@ export class SeederManager {
     private readonly departmentSeeder: DepartmentSeeder,
     private readonly roleSeeder: RolesSeeder,
   ) {
-    this.seeders = [serviceSeeder, departmentSeeder, roleSeeder]; // Add more seeders here
+    this.seeders = [serviceSeeder, departmentSeeder, roleSeeder];
   }
 
   async runSeeders(): Promise<void> {

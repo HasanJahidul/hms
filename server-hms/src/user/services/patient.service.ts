@@ -27,7 +27,7 @@ export class PatientService {
       }
       const patient = this.patientMapper.dtoToEntity(dto);
       const entity = this.userRepository.create(patient);
-      this.userRepository.save(entity);
+      await this.userRepository.save(entity);
       return new ResponseHandler(
         'Patient Created Successfully',
         HttpStatus.CREATED,
@@ -51,7 +51,10 @@ export class PatientService {
           role: true,
         },
       });
-      return new ResponseHandler(allPatient, HttpStatus.OK);
+      return new ResponseHandler(
+        { count: allPatient.length, data: allPatient },
+        HttpStatus.OK,
+      );
     } catch (err) {
       console.log(err);
       return new ResponseHandler(
@@ -82,7 +85,7 @@ export class PatientService {
   async update(dto: UpdatePatientDto) {
     try {
       const id = dto.id;
-      const emailCheck = this.userRepository.findOne({
+      const emailCheck = await this.userRepository.findOne({
         where: {
           role_id: 5,
           is_active: true,
@@ -90,6 +93,7 @@ export class PatientService {
           id: Not(dto.id),
         },
       });
+      console.log(emailCheck);
       if (emailCheck) {
         return new ResponseHandler(
           'Patient with the same email already exist',
@@ -108,7 +112,7 @@ export class PatientService {
       const patient = this.patientMapper.dtoToEntityForUpdate(dto, user);
       console.log(patient);
       const entity = this.userRepository.create(patient);
-      this.userRepository.save(entity);
+      await this.userRepository.save(entity);
       return new ResponseHandler('Patient Updated Successfully', HttpStatus.OK);
     } catch (err) {
       return new ResponseHandler(

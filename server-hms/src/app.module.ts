@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AppointmentModule } from './appointment/appoinment.module';
 import { AuthModule } from './auth/auth.module';
+import { EmailService } from './common/email.service';
 import { DepartmentModule } from './department/department.module';
 import { ManagerModule } from './manager/manager.module';
 import { SeederModule } from './seeder/seeder.module';
@@ -10,10 +13,13 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     SeederModule,
     UserModule,
     ManagerModule,
     AuthModule,
+    AppointmentModule,
+    DepartmentModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -25,9 +31,8 @@ import { UserModule } from './user/user.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    DepartmentModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EmailService],
 })
 export class AppModule {}

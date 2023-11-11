@@ -7,7 +7,6 @@ import { UserDetails } from '../entities/userDetails.entity';
 
 export class DoctorMapper {
   dtoToEntity(dto: CreateDoctorDto) {
-    // if dto has email property then create user entity
     const user = new User();
     const userDetails = new UserDetails();
     const department = new Department();
@@ -25,7 +24,6 @@ export class DoctorMapper {
     return user;
   }
   dtoToEntityForUpdate(dto: UpdateDoctorDto, user: User) {
-    // if dto has email property then create user entity
     const entity = user;
     const userDetails = user.userDetails;
     if (dto.email) {

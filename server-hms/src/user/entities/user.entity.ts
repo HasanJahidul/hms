@@ -1,4 +1,6 @@
 import * as bcrypt from 'bcrypt';
+import { Appointment } from 'src/appointment/entities/appointment.entity';
+import { AvailableAppointment } from 'src/appointment/entities/availableAppointment.entity';
 import { Department } from 'src/department/entities/department.entity';
 import { BaseEntity } from 'src/entities/baseEntity.entity';
 import {
@@ -7,6 +9,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
 } from 'typeorm';
 import { Roles } from './role.entity';
@@ -19,13 +22,17 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
   @Column({ default: true })
   is_active: boolean;
+
   @Column()
   role_id: number;
+
   @ManyToOne(() => Roles, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Roles;
+
   @OneToOne(() => UserDetails, (details) => details.user, {
     cascade: true,
     eager: true,
@@ -33,9 +40,20 @@ export class User extends BaseEntity {
   })
   @JoinColumn()
   userDetails: UserDetails;
+
   @ManyToOne(() => Department, (department) => department.doctors)
   @JoinColumn({ name: 'department_id' })
   department: Department;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  appointments: Appointment[];
+
+  @OneToMany(
+    () => AvailableAppointment,
+    (availableAppointment) => availableAppointment.doctor,
+  )
+  availableAppointments: AvailableAppointment[];
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
