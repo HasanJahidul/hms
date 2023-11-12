@@ -8,15 +8,15 @@ import {
 export class CreateAppointmentDto {
   @IsNumber()
   @IsNotEmpty()
-  serviceId: number;
-
-  @IsNumber()
-  @IsNotEmpty()
   doctorId: number;
 
   @IsDateString()
   @IsNotEmpty()
-  dateTime: Date;
+  availableAppointmentId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  patientId: number;
 }
 
 export class UpdateAppointmentDto {

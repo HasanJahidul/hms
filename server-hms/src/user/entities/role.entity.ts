@@ -8,6 +8,6 @@ export class Roles extends BaseEntity {
   name: string;
   @Column({ default: true })
   is_active: boolean;
-  @OneToMany(() => User, (user) => user.role_id)
+  @OneToMany(() => User, (user) => user.role)
   users: User[];
 }

@@ -11,7 +11,7 @@ export class Department extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToMany(() => Service, (service) => service.departments)
+  @ManyToMany(() => Service, (service) => service.departments, { eager: true })
   @JoinTable()
   services: Service[];
 

@@ -16,7 +16,7 @@ export class NurseService {
   async create(dto: CreateNurseDto) {
     try {
       const exits = await this.userRepository.findOne({
-        where: { email: dto.email, role_id: 4 },
+        where: { email: dto.email, role: { id: 4 } },
       });
       console.log('nurse-> ' + exits);
       if (exits) {
@@ -44,7 +44,7 @@ export class NurseService {
   async findAll() {
     try {
       const allNurse = await this.userRepository.find({
-        where: { deleted_at: null, role_id: 4 },
+        where: { deleted_at: null, role: { id: 4 } },
         relations: {
           department: true,
           userDetails: true,
@@ -63,7 +63,7 @@ export class NurseService {
 
   async findOne(id: number) {
     const nurse = await this.userRepository.findOne({
-      where: { id: id, deleted_at: null, role_id: 4, is_active: true },
+      where: { id: id, deleted_at: null, role: { id: 4 }, is_active: true },
       relations: {
         department: true,
         userDetails: true,
@@ -84,7 +84,7 @@ export class NurseService {
       const id = dto.id;
       const emailCheck = this.userRepository.findOne({
         where: {
-          role_id: 4,
+          role: { id: 4 },
           is_active: true,
           email: dto.email,
           id: Not(dto.id),
@@ -97,7 +97,7 @@ export class NurseService {
         );
       }
       const user = await this.userRepository.findOne({
-        where: { id: id, deleted_at: null, role_id: 4, is_active: true },
+        where: { id: id, deleted_at: null, role: { id: 4 }, is_active: true },
       });
       if (!user) {
         return new ResponseHandler(

@@ -60,7 +60,7 @@ export class ManagerService {
       const id = this.userService.getCurrentUserId();
       const emailCheck = this.userRepository.findOne({
         where: {
-          role_id: 4,
+          role: { id: 4 },
           is_active: true,
           email: dto.email,
           id: Not(id),

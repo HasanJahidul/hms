@@ -26,10 +26,7 @@ export class User extends BaseEntity {
   @Column({ default: true })
   is_active: boolean;
 
-  @Column()
-  role_id: number;
-
-  @ManyToOne(() => Roles, (role) => role.users)
+  @ManyToOne(() => Roles, (role) => role.users, { eager: true })
   @JoinColumn({ name: 'role_id' })
   role: Roles;
 
@@ -41,16 +38,23 @@ export class User extends BaseEntity {
   @JoinColumn()
   userDetails: UserDetails;
 
-  @ManyToOne(() => Department, (department) => department.doctors)
+  @ManyToOne(() => Department, (department) => department.doctors, {
+    eager: true,
+  })
   @JoinColumn({ name: 'department_id' })
   department: Department;
 
-  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  @OneToMany(() => Appointment, (appointment) => appointment.doctor, {
+    eager: true,
+  })
   appointments: Appointment[];
 
   @OneToMany(
     () => AvailableAppointment,
     (availableAppointment) => availableAppointment.doctor,
+    {
+      eager: true,
+    },
   )
   availableAppointments: AvailableAppointment[];
 

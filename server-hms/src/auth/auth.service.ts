@@ -5,6 +5,7 @@ import { User } from 'src/user/entities/user.entity';
 import { UserDetails } from 'src/user/entities/userDetails.entity';
 import { Repository } from 'typeorm';
 import { LoginDto, SignupDto } from './dto/auth.dto';
+import { Roles } from 'src/user/entities/role.entity';
 
 export class AuthService {
   constructor(
@@ -32,7 +33,7 @@ export class AuthService {
     const result = await bcrypt.compare(dto.password, user.password);
     if (result) {
       session.email = user.email;
-      session.role = user.role_id;
+      session.role = user.role.id;
       return true;
     } else {
       return false;
@@ -48,7 +49,9 @@ export class AuthService {
     const entity = new User();
     entity.email = dto.email;
     entity.password = dto.password;
-    entity.role_id = dto.role_id;
+    const role = new Roles();
+    role.id = dto.role_id;
+    entity.role = role;
 
     const userDetails = new UserDetails();
 

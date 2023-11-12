@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as session from 'express-session';
+import * as path from 'path';
 import { AppModule } from './app.module';
 import { SeederManager } from './seeder/seeder-manager';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(
     session({
       secret: 'my-secret',
@@ -17,6 +19,7 @@ async function bootstrap() {
   const seederManager = app.get(SeederManager);
 
   await seederManager.runSeeders();
+  app.useStaticAssets(path.join(__dirname, '../upload'));
 
   await app.listen(3000);
 }

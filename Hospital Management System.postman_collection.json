@@ -1,0 +1,752 @@
+{
+	"info": {
+		"_postman_id": "26b09001-b90b-4be8-9637-30dca6cdeac9",
+		"name": "Hospital Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28057476"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create Roles",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"name\": \"Admin\",\n    \"is_active\": true\n  },\n  {\n    \"name\": \"Manager\",\n    \"is_active\": true\n  },\n  {\n    \"name\": \"Doctor\",\n    \"is_active\": true\n  },\n  {\n    \"name\": \"Nurse\",\n    \"is_active\": true\n  }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/roles",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/signup",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login User\",function(){",
+									"    const access_token = pm.response.json().access_token;",
+									"    // console.log(responseJson);",
+									"    pm.collectionVariables.set('access_token',access_token);",
+									"",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}auth/login",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}auth/getUserByID?id=1",
+							"host": [
+								"{{baseUrl}}auth"
+							],
+							"path": [
+								"getUserByID"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload profile pic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profilepic",
+									"type": "file",
+									"src": "/home/joy/Downloads/image.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}user/upload?id=1",
+							"host": [
+								"{{baseUrl}}user"
+							],
+							"path": [
+								"upload"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manager",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}manager/profile",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"hi\",\n    \"email\": \"joy@gmail.com\",\n    \"phone\": \"01631154454\",\n    \"address\":\"hi\",\n    \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager",
+							"host": [
+								"{{baseUrl}}manager"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doctor",
+			"item": [
+				{
+					"name": "Create Doctor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"doctor@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/doctor",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doctor List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/doctor/list",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"doctor",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doctor details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/doctor?id=4",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"doctor"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Doctor Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":4,\n    \"name\": \"hi\",\n    \"email\": \"aaaaaaaaaaa@gmail.com\",\n    \"phone\": \"01631154454\",\n    \"address\":\"hi\",\n    \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/doctor/profile",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"doctor",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Nurse",
+			"item": [
+				{
+					"name": "Create Nurse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"nurse@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/nurse",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"nurse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Nurse List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/nurse/list",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"nurse",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Nurse details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/nurse?id=5",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"nurse"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Nurse Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":5,\n    \"name\": \"nurse\",\n    \"email\": \"joy@gmail.com\",\n    \"phone\": \"01631154454\",\n    \"address\":\"hi\",\n    \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/nurse/profile",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"nurse",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Create Patient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"nurse@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"department_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/patient",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patient List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/patient/list",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"patient",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patient details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nihal\",\n    \"email\": \"joy@gmail.com\",\n    \"password\": \"A4apple%\",\n    \"address\":\"Dhaka\",\n    \"phone\": \"01635541357\",\n    \"role_id\": 3,\n    \"department_id\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/patient?id=4",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"patient"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Patient Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":4,\n    \"name\": \"patient\",\n    \"email\": \"joy@gmail.com\",\n    \"phone\": \"01631154454\",\n    \"address\":\"hi\",\n    \"role_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}manager/patient/profile",
+							"host": [
+								"{{baseUrl}}manager"
+							],
+							"path": [
+								"patient",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointment",
+			"item": [
+				{
+					"name": "create appointment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patientId\": 2,\n  \"doctorId\": 3,\n  \"availableAppointmentId\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}appointments/make-appointment",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"make-appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign available appointment to a doctor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"doctorId\": 2,\n  \"availableSlots\": [\n    { \"dateTime\": \"2023-12-01T08:00:00Z\"},\n    { \"dateTime\": \"2023-12-01T09:00:00Z\"},\n    { \"dateTime\": \"2023-12-01T10:00:00Z\"},\n    { \"dateTime\": \"2023-12-02T08:00:00Z\"},\n    { \"dateTime\": \"2023-12-02T09:00:00Z\"},\n    { \"dateTime\": \"2023-12-02T10:00:00Z\"},\n    { \"dateTime\": \"2023-12-03T08:00:00Z\"},\n    { \"dateTime\": \"2023-12-03T09:00:00Z\"},\n    { \"dateTime\": \"2023-12-03T10:00:00Z\"},\n    { \"dateTime\": \"2023-12-04T08:00:00Z\"}\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}appointments/available",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get available appoinments by doctor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}appointments/available?doctorId=5",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"available"
+							],
+							"query": [
+								{
+									"key": "doctorId",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all appointment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}appointments/get-all",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get appointment  By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}appointments/get-by-id?id=4",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"get-by-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update appointment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"serviceId\": 1,\n  \"doctorId\": 1,\n  \"dateTime\": \"2023-11-10T08:00:00Z\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}appointments/update",
+							"host": [
+								"{{baseUrl}}appointments"
+							],
+							"path": [
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete appoinment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}appointments",
+							"host": [
+								"{{baseUrl}}appointments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}

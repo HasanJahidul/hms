@@ -43,7 +43,7 @@ export class DoctorService {
   async findAll() {
     try {
       const allDoctor = await this.userRepository.find({
-        where: { deleted_at: null, role_id: 3 },
+        where: { deleted_at: null, role: { id: 3 } },
         relations: {
           department: true,
           userDetails: true,
@@ -62,7 +62,7 @@ export class DoctorService {
 
   async findOne(id: number) {
     const doctor = await this.userRepository.findOne({
-      where: { id: id, deleted_at: null, role_id: 3, is_active: true },
+      where: { id: id, deleted_at: null, role: { id: 3 }, is_active: true },
       relations: {
         department: true,
         userDetails: true,
@@ -83,7 +83,7 @@ export class DoctorService {
       const id = dto.id;
       const emailCheck = this.userRepository.findOne({
         where: {
-          role_id: 3,
+          role: { id: 3 },
           is_active: true,
           email: dto.email,
           id: Not(dto.id),
@@ -96,7 +96,7 @@ export class DoctorService {
         );
       }
       const user = await this.userRepository.findOne({
-        where: { id: id, deleted_at: null, role_id: 3, is_active: true },
+        where: { id: id, deleted_at: null, role: { id: 3 }, is_active: true },
       });
       if (!user) {
         return new ResponseHandler(

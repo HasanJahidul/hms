@@ -13,12 +13,12 @@ export class SessionGuard implements CanActivate {
     if (sessionEmail) {
       const user = await this.userService.getUserByEmail(sessionEmail);
       const id = user ? user.id : 1;
-      console.log('SessionGuard: ', user.role_id);
+      console.log('SessionGuard: ', user.role.id);
       // Set the user ID in the BaseEntity
       this.baseEntity.setCreated_by(id);
       this.baseEntity.setUpdated_by(id);
       this.userService.setCurrentUserId(id);
-      this.userService.setCurrentUserRole(user.role_id);
+      this.userService.setCurrentUserRole(user.role.id);
 
       return true;
     }

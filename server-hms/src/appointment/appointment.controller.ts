@@ -13,27 +13,28 @@ import {
   CreateAppointmentDto,
   UpdateAppointmentDto,
 } from './dto/appointment.dto';
+import { CreateAvailableAppointmentDto } from './dto/availableAppointment.dto';
 
 @Controller('appointments')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
-  @Get()
+  @Get('get-all')
   getAllAppointments() {
     return this.appointmentService.getAllAppointments();
   }
 
-  @Get(':id')
+  @Get('get-by-id')
   getAppointmentById(@Query('id') id: number) {
     return this.appointmentService.getAppointmentById(id);
   }
 
-  @Post()
+  @Post('make-appointment')
   createAppointment(@Body() createAppointmentDto: CreateAppointmentDto) {
     return this.appointmentService.createAppointment(createAppointmentDto);
   }
 
-  @Put()
+  @Put('update')
   updateAppointment(@Body() updateAppointmentDto: UpdateAppointmentDto) {
     return this.appointmentService.updateAppointment(updateAppointmentDto);
   }
@@ -41,5 +42,13 @@ export class AppointmentController {
   @Delete(':id')
   deleteAppointment(@Param('id') id: number) {
     return this.appointmentService.deleteAppointment(id);
+  }
+  @Post('available')
+  addAvailableAppointment(@Body() dto: CreateAvailableAppointmentDto) {
+    return this.appointmentService.addAvailableAppointment(dto);
+  }
+  @Get('/available')
+  getAvailableAppointments(@Query('doctorId') doctorId: number) {
+    return this.appointmentService.getAvailableAppointments(doctorId);
   }
 }
