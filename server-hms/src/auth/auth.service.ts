@@ -1,14 +1,16 @@
 import { HttpException, HttpStatus, Session } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { EmailService } from 'src/common/email.service';
+import { Roles } from 'src/user/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 import { UserDetails } from 'src/user/entities/userDetails.entity';
 import { Repository } from 'typeorm';
 import { LoginDto, SignupDto } from './dto/auth.dto';
-import { Roles } from 'src/user/entities/role.entity';
 
 export class AuthService {
   constructor(
+    private readonly emailService: EmailService,
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
   async getAll(): Promise<User[]> {
@@ -64,6 +66,11 @@ export class AuthService {
     const user = this.userRepository.create(entity);
 
     await this.userRepository.save(user);
+    await this.emailService.sendMail(
+      dto.email,
+      'HMS',
+      'Welcome to our app HMS System',
+    );
     return user;
   }
   async getUserByID(id: number): Promise<any> {
