@@ -16,6 +16,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.enableCors(); // Fix: Remove the argument from enableCors method.
   const seederManager = app.get(SeederManager);
 
   await seederManager.runSeeders();

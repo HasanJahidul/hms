@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Session } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/common/email.service';
+import { ResponseHandler } from 'src/common/response-handler';
 import { Roles } from 'src/user/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 import { UserDetails } from 'src/user/entities/userDetails.entity';
@@ -41,7 +42,7 @@ export class AuthService {
       return false;
     }
   }
-  async signUp(dto: SignupDto): Promise<User> {
+  async signUp(dto: SignupDto): Promise<any> {
     const validate = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -71,7 +72,7 @@ export class AuthService {
       'HMS',
       'Welcome to our app HMS System',
     );
-    return user;
+    return new ResponseHandler('Signup successful', HttpStatus.OK);
   }
   async getUserByID(id: number): Promise<any> {
     try {

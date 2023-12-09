@@ -34,6 +34,7 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Session() session) {
     if (await this.authService.login(dto, session)) {
       return {
+        status: HttpStatus.OK,
         message: 'Login successful',
         session: session,
       };
