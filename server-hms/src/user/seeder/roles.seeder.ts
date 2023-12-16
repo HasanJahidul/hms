@@ -28,9 +28,9 @@ export class RolesSeeder implements Seeder {
       this.rolesRepository.create(data),
     );
     // Reset the sequence to restart from 1
-    await this.rolesRepository.query(
-      'ALTER SEQUENCE roles_id_seq RESTART WITH 1;',
-    );
+    // await this.rolesRepository.query(
+    //   'ALTER SEQUENCE roles_id_seq RESTART WITH 1;',
+    // );
     await this.rolesRepository.save(rolesEntities);
   }
 }

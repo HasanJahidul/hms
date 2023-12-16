@@ -17,6 +17,10 @@ export class SeederManager {
   }
 
   async runSeeders(): Promise<void> {
+    const runSeeder = process.env.RUN_SEEDER === 'true' ? true : false;
+    if (!runSeeder) {
+      return;
+    }
     for (const seeder of this.seeders) {
       await this.runSeeder(seeder);
     }

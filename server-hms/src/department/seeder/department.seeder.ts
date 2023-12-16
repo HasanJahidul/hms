@@ -65,9 +65,9 @@ export class DepartmentSeeder implements Seeder {
       this.departmentRepository.create(data),
     );
     // Reset the sequence to restart from 1
-    await this.departmentRepository.query(
-      'ALTER SEQUENCE department_id_seq RESTART WITH 1;',
-    );
+    // await this.departmentRepository.query(
+    //   'ALTER SEQUENCE department_id_seq RESTART WITH 1;',
+    // );
     await this.departmentRepository.save(departmentEntities);
   }
 }
