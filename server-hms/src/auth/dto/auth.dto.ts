@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import {
   IsEmail,
+  IsNumber,
   IsString,
   Matches,
   MaxLength,
@@ -37,6 +38,6 @@ export class SignupDto {
   @IsString()
   @Matches(/^[0-9]{11}$/)
   phone: string;
-  @IsString()
+  @IsNumber()
   role_id: number;
 }

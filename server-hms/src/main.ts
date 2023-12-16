@@ -1,11 +1,14 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as session from 'express-session';
 import * as path from 'path';
 import { AppModule } from './app.module';
 import { SeederManager } from './seeder/seeder-manager';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(
     session({
       secret: 'my-secret',
@@ -16,7 +19,7 @@ async function bootstrap() {
       },
     }),
   );
-  app.enableCors(); // Fix: Remove the argument from enableCors method.
+  app.enableCors();
   const seederManager = app.get(SeederManager);
 
   await seederManager.runSeeders();

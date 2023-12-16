@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmailService } from 'src/common/email.service';
 import { ResponseHandler } from 'src/common/response-handler';
 import { Roles } from './entities/role.entity';
 import { User } from './entities/user.entity';
@@ -29,6 +30,7 @@ import { UserService } from './user.service';
     NurseService,
     PatientMapper,
     PatientService,
+    EmailService,
   ],
   exports: [
     UserService,

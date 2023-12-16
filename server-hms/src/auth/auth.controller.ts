@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import session from 'express-session';
 import { Roles } from 'src/user/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -34,13 +35,19 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Session() session) {
     if (await this.authService.login(dto, session)) {
       return {
-        status: HttpStatus.OK,
         message: 'Login successful',
         session: session,
       };
     } else {
       throw new HttpException('UnauthorizedException', HttpStatus.UNAUTHORIZED);
     }
+  }
+  @Get('/logout')
+  @UseGuards(SessionGuard)
+  logout (@Session( )session){
+  session.email=undefined;
+  session.role= undefined;
+  return "logout successfully";
   }
   @Post('/signup')
   signUp(@Body() signUpDto: SignupDto): Promise<User> {

@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmailService } from 'src/common/email.service';
 import { ResponseHandler } from 'src/common/response-handler';
 import { CreateDoctorDto } from 'src/manager/dto/create-doctor.dto';
 import { UpdateDoctorDto } from 'src/manager/dto/update-doctor.dto';
@@ -10,6 +11,7 @@ import { DoctorMapper } from '../mapper/doctor.mapper';
 @Injectable()
 export class DoctorService {
   constructor(
+    private readonly emailService: EmailService,
     @InjectRepository(User) private userRepository: Repository<User>,
     private readonly doctorMapper: DoctorMapper,
   ) {}
@@ -27,6 +29,7 @@ export class DoctorService {
       const doctor = this.doctorMapper.dtoToEntity(dto);
       const entity = this.userRepository.create(doctor);
       await this.userRepository.save(entity);
+      await this.emailService.sendMail(dto.email,"HMS","Welcome as a doctor");
       return new ResponseHandler(
         'Doctor Created Successfully',
         HttpStatus.CREATED,
