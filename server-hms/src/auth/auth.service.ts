@@ -32,6 +32,9 @@ export class AuthService {
       email: dto.email,
     });
     console.log(user);
+    if (!user) {
+      return false;
+    }
     const result = await bcrypt.compare(dto.password, user.password);
     if (result) {
       session.email = user.email;

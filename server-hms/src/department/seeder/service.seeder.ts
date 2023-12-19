@@ -63,9 +63,9 @@ export class ServiceSeeder implements Seeder {
       this.serviceRepository.create(data),
     );
     // Reset the sequence to restart from 1
-    await this.serviceRepository.query(
-      'ALTER SEQUENCE service_id_seq RESTART WITH 1;',
-    );
+    // await this.serviceRepository.query(
+    //   'ALTER SEQUENCE service_id_seq RESTART WITH 1;',
+    // );
     await this.serviceRepository.save(serviceEntities);
   }
 }

@@ -44,10 +44,10 @@ export class AuthController {
   }
   @Get('/logout')
   @UseGuards(SessionGuard)
-  logout (@Session( )session){
-  session.email=undefined;
-  session.role= undefined;
-  return "logout successfully";
+  logout(@Session() session) {
+    session.email = undefined;
+    session.role = undefined;
+    return 'logout successfully';
   }
   @Post('/signup')
   signUp(@Body() signUpDto: SignupDto): Promise<User> {
