@@ -39,7 +39,10 @@ export class AuthController {
         session: session,
       };
     } else {
-      throw new HttpException('UnauthorizedException', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'Credential are incorrect',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
   @Get('/logout')
