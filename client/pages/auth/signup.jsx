@@ -109,19 +109,29 @@ const signup = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="w-full max-w-md">
           <div className="text-center mb-10">
-            <h1 className="font-bold text-4xl">HMS</h1>
-            <p className="text-gray-500">Welcome to HMS. Please Sign Up to continue.</p>
+            <h1 className="font-bold text-4xl bg-blue-600">HMS</h1>
+            <p className="text-gray-500">
+              Welcome to HMS. Please Sign Up to continue.
+            </p>
           </div>
           <Card className="mx-auto w-full bg-[#ffffff] p-6 rounded-lg shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl">Sign Up</CardTitle>
-              <CardDescription>Please enter your credentials to create your account.</CardDescription>
+              <CardTitle className="text-2xl bg-blue-600 text-center">
+                Sign Up
+              </CardTitle>
+              <CardDescription className="text-black">
+                Please enter your credentials to create your account.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-black">
+                  Name
+                </Label>
                 <Input
-                  className={`border-2 border-gray-200 p-2 rounded-md ${errors.name ? 'border-red-500' : ''}`}
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.name ? "border-red-500" : ""
+                  }`}
                   id="name"
                   placeholder="John"
                   required
@@ -132,9 +142,13 @@ const signup = () => {
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-black">
+                  Email
+                </Label>
                 <Input
-                  className={`border-2 border-gray-200 p-2 rounded-md ${errors.email ? 'border-red-500' : ''}`}
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                   id="email"
                   placeholder="john@example.com"
                   required
@@ -145,59 +159,82 @@ const signup = () => {
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
               <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-black">
+                  Password
+                </Label>
                 <Input
-                    className={`border-2 border-gray-200 p-2 rounded-md ${errors.password ? 'border-red-500' : ''}`}
-                    id="password"
-                    required
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={handleChange}
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.password ? "border-red-500" : ""
+                  }`}
+                  id="password"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 <button
-                    type="button"
-                    className="text-blue-500 hover:text-blue-800 cursor-pointer"
-                    onClick={toggleShowPassword}
+                  type="button"
+                  className="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  onClick={toggleShowPassword}
                 >
-                    {showPassword ? 'Hide' : 'Show'} Password
+                  {showPassword ? "Hide" : "Show"} Password
                 </button>
-                {errors.password && <p className="text-red-500">{errors.password}</p>}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                    className={`border-2 border-gray-200 p-2 rounded-md ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                    id="confirmPassword"
-                    required
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                />
-                <button
-                    type="button"
-                    className="text-blue-500 hover:text-blue-800 cursor-pointer"
-                    onClick={toggleShowPassword}
-                >
-                    {showPassword ? 'Hide' : 'Show'} confirmPassword
-                </button>
-                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
-            </div>
+                {errors.password && (
+                  <p className="text-red-500">{errors.password}</p>
+                )}
+              </div>
               <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+                <Label htmlFor="confirmPassword" className="text-black">
+                  Confirm Password
+                </Label>
                 <Input
-                  className={`border-2 border-gray-200 p-2 rounded-md ${errors.address ? 'border-red-500' : ''}`}
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.confirmPassword ? "border-red-500" : ""
+                  }`}
+                  id="confirmPassword"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? "Hide" : "Show"} confirmPassword
+                </button>
+                {errors.confirmPassword && (
+                  <p className="text-red-500">{errors.confirmPassword}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address" className="text-black">
+                  Address
+                </Label>
+                <Input
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.address ? "border-red-500" : ""
+                  }`}
                   id="address"
                   required
-                  type="text"                placeholder="Address"
+                  type="text"
+                  placeholder="Address"
                   value={formData.address}
                   onChange={handleChange}
                 />
-                {errors.address && <p className="text-red-500">{errors.address}</p>}
+                {errors.address && (
+                  <p className="text-red-500">{errors.address}</p>
+                )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone" className="text-black">
+                  Phone
+                </Label>
                 <Input
-                  className={`border-2 border-gray-200 p-2 rounded-md ${errors.phone ? 'border-red-500' : ''}`}
+                  className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                    errors.phone ? "border-red-500" : ""
+                  }`}
                   id="phone"
                   required
                   type="text"
@@ -215,7 +252,10 @@ const signup = () => {
               >
                 Sign Up
               </Button>
-              <Link href="/auth/login" className="text-blue-500 hover:text-blue-800">
+              <Link
+                href="/auth/login"
+                className="text-blue-500 hover:text-blue-800"
+              >
                 Login Instead?
               </Link>
             </CardFooter>

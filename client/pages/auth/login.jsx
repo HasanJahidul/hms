@@ -34,52 +34,68 @@ export default function login() {
     }
   };
   return (
-    (<div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <h1 className="font-bold text-4xl">HMS</h1>
-          <p className="text-gray-500">Welcome to HMS. Please login to continue.</p>
+          <h1 className="font-bold text-4xl bg-blue-600">HMS</h1>
+          <p className="text-gray-500">
+            Welcome to HMS. Please login to continue.
+          </p>
         </div>
         <Card className="mx-auto w-full bg-[#ffffff] p-6 rounded-lg shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>Please enter your credentials to access your account.</CardDescription>
+            <CardTitle className="text-2xl text-white bg-blue-600 text-center">
+              Login
+            </CardTitle>
+            <CardDescription className="text-black">
+              Please enter your credentials to access your account.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-black">
+                Email
+              </Label>
               <Input
-                className="border-2 border-gray-200 p-2 rounded-md"
+                className="border-2 border-gray-200 p-2 rounded-md text-black"
                 id="email"
                 placeholder="john@example.com"
                 required
-                type="email" 
-                onChange={(e) => setEmail(e.target.value)}
-                />
+                type="email"
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                }}
+              />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-black">
+                Password
+              </Label>
               <Input
-                className="border-2 border-gray-200 p-2 rounded-md"
+                className="border-2 border-gray-200 p-2 rounded-md text-black"
                 id="password"
                 required
-                type="password"  onChange={(e) => setPassword(e.target.value)}
-                />
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </CardContent>
           <CardFooter className="flex justify-between items-center mt-4">
             <Button
               className="w-32 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleLogin}
-              >
+            >
               Sign In
             </Button>
-            <Link href="/auth/signup" className="text-blue-500 hover:text-blue-800" >
+            <Link
+              href="/auth/signup"
+              className="text-blue-500 hover:text-blue-800"
+            >
               Sign Up?
             </Link>
           </CardFooter>
         </Card>
       </div>
-    </div>)
+    </div>
   );
 }
