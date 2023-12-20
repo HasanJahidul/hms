@@ -2,31 +2,8 @@ import axios from "axios";
 
 const serverUrl = String(process.env.NEXT_PUBLIC_SERVER_BASE_URL);
 
-export const createRoles = () => {
-  const data = [
-    {
-      name: "Admin",
-      is_active: true,
-    },
-    {
-      name: "Manager",
-      is_active: true,
-    },
-    {
-      name: "Doctor",
-      is_active: true,
-    },
-    {
-      name: "Nurse",
-      is_active: true,
-    },
-  ];
-
-  return axios.post(`${serverUrl}/auth/roles`);
-};
-
-export const login = (data) => {
-  return axios.post(`${serverUrl}/auth/login`, data);
+export const userLogin = async (data) => {
+  const response = await axios.post(`${serverUrl}/auth/login`, data);
 };
 
 export const signUp = (data) => {

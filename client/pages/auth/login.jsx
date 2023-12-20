@@ -1,36 +1,62 @@
-import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useState } from "react"
-import { jsxService } from "@/service"
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
-
+import {
+  CardTitle,
+  CardDescription,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  Card,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState } from "react";
+import { jsxService } from "@/service";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { getCookies, setCookie, deleteCookie, getCookie } from "cookies-next";
 
 export default function login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('A4apple%');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("A4apple%");
+
+  const router = useRouter();
 
   const handleLogin = async () => {
     try {
       // Make a POST request to your backend for authentication
-      const response = await jsxService().post('/auth/login', { email, password });
-      console.log(response);
+      const response = await jsxService().post("/auth/login", {
+        email: email,
+        password: password,
+      });
+      console.log("User Login", response);
 
-      if (response.data.status === 200) {
+      if (response.status == 201) {
         // Login successful, you may redirect or perform other actions
-        console.log(response.data.message);
+        setCookie("email", response.data.session.email, {
+          path: response.data.session.cookie.path,
+          maxAge: response.data.session.cookie.originalMaxAge,
+          // expires: response.data.session.cookie.originalMaxAge,
+          httpOnly: response.data.session.cookie.httpOnly,
+        });
+        setCookie("role", response.data.session.role, {
+          path: response.data.session.cookie.path,
+          maxAge: response.data.session.cookie.originalMaxAge,
+          // expires: response.data.session.cookie.originalMaxAge,
+          httpOnly: response.data.session.cookie.httpOnly,
+        });
         toast.success(response.data.message.message);
+        console.log(response.data.message);
+
+        router.push('/manager/dashboard')
       } else {
-        toast.error(response.data.message);
+        // toast.error(response.data.message);
         // Handle authentication error
-        console.error('Authentication failed');
+        console.error("Authentication failed");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.error('Error during login:', error);
+      // toast.error(error.response.data.message);
+      console.error("Error during login:", error);
     }
   };
   return (
@@ -63,7 +89,7 @@ export default function login() {
                 required
                 type="email"
                 onChange={(e) => {
-                  setEmail(e.target.value)
+                  setEmail(e.target.value);
                 }}
               />
             </div>
