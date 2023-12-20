@@ -5,10 +5,8 @@ const list = () => {
   const [list, setList] = useState(null);
 
   const getDoctorList = async () => {
-    const response = await jsxService().get("manager/doctor/list");
-      console.log("Doctor List", response);
-      
-    
+    const response = (await jsxService().get("manager/doctor/list"));
+    console.log("Doctor List", response);
   };
 
   useEffect(() => {

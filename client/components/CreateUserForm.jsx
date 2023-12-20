@@ -21,11 +21,26 @@ export function CreateUserForm({
     department_id: 0,
   });
 
+  const departmentList = [
+    { id: 1, name: "Heart" },
+    { id: 2, name: "Brain" },
+    { id: 3, name: "Stomach" },
+  ];
+
   useEffect(() => {
     if (isUpdate) {
       // api call and set the data
     }
   }, [isUpdate]);
+
+  const createUser = async (data) => {
+    //
+  };
+
+  const updateUser = async (data) => {
+    //
+  };
+
   return (
     <div className="mx-auto max-w-md space-y-6">
       <Card className="space-y-2">
@@ -106,12 +121,12 @@ export function CreateUserForm({
               className="w-full h-10 border border-gray-300 rounded-md text-black"
               id="department"
               onChange={(e) => {
-                console.log(e.target.value);
+                setFormData((prev) => ({ ...prev, role_id: e.target.value }));
               }}
             >
-              <option id={1}>Heart</option>
-              <option id={2}>Brain</option>
-              <option id={3}>Stomach</option>
+              {departmentList.map((data) => {
+                return <option value={data.id}>{data.name}</option>;
+              })}
             </select>
           </div>
           <div className="space-y-2">
