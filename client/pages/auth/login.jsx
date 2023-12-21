@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
-import { jsxService } from "@/service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { getCookies, setCookie, deleteCookie, getCookie } from "cookies-next";
+import axios from "axios";
 
 export default function login() {
   const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ export default function login() {
   const handleLogin = async () => {
     try {
       // Make a POST request to your backend for authentication
-      const response = await jsxService().post("/auth/login", {
+      const response = await axios.post("http://localhost:3000/auth/login", {
         email: email,
         password: password,
       });
@@ -33,22 +33,25 @@ export default function login() {
 
       if (response.status == 201) {
         // Login successful, you may redirect or perform other actions
-        setCookie("email", response.data.session.email, {
-          path: response.data.session.cookie.path,
-          maxAge: response.data.session.cookie.originalMaxAge,
-          // expires: response.data.session.cookie.originalMaxAge,
-          httpOnly: response.data.session.cookie.httpOnly,
-        });
-        setCookie("role", response.data.session.role, {
-          path: response.data.session.cookie.path,
-          maxAge: response.data.session.cookie.originalMaxAge,
-          // expires: response.data.session.cookie.originalMaxAge,
-          httpOnly: response.data.session.cookie.httpOnly,
-        });
+        setCookie("email", response.data.session.email);
+        setCookie("role", response.data.session.role);
+        setCookie("session", response.data.session);
         toast.success(response.data.message.message);
         console.log(response.data.message);
 
-        router.push('/manager/dashboard')
+        router.push(
+          `/${
+            response.data.session.role == 2
+              ? "manager"
+              : response.data.session.role == 3
+              ? "doctor"
+              : response.data.session.role == 4
+              ? "nurse"
+              : response.data.session.role == 5
+              ? "patient"
+              : "patient"
+          }/dashboard`
+        );
       } else {
         // toast.error(response.data.message);
         // Handle authentication error

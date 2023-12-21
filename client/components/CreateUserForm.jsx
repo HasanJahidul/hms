@@ -8,16 +8,17 @@ export function CreateUserForm({
   formTitle,
   roleId,
   role,
-  userId = 0,
+  apiData = null,
   isUpdate = false,
 }) {
   const [formData, setFormData] = useState({
+    id: 0,
     name: "",
     email: "",
     password: "",
     address: "",
     phone: "",
-    role_id: 0,
+    role_id: roleId,
     department_id: 0,
   });
 
@@ -28,17 +29,81 @@ export function CreateUserForm({
   ];
 
   useEffect(() => {
-    if (isUpdate) {
-      // api call and set the data
+    if (isUpdate && apiData != null) {
+      setFormData((prev) => ({
+        ...prev,
+        id: apiData.userId,
+        name: apiData.userName,
+        email: apiData.email,
+        address: apiData.userAddress,
+        role_id: roleId,
+        phone: apiData.userPhone,
+      }));
     }
-  }, [isUpdate]);
+  }, [isUpdate, apiData]);
 
   const createUser = async (data) => {
-    //
+    delete data.id;
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/manager/${
+          roleId == 3
+            ? "doctor"
+            : roleId == 4
+            ? "nurse"
+            : roleId == 5
+            ? "patient"
+            : "patient"
+        }`,
+        data
+      );
+      if (response.status === 201 && response.data.status === 200) {
+        toast.success(response.data.message);
+        setFormData({
+          id: 0,
+          name: "",
+          email: "",
+          password: "",
+          address: "",
+          phone: "",
+          role_id: roleId,
+          department_id: 0,
+        });
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   const updateUser = async (data) => {
-    //
+    if (data.department_id && data.password) {
+      delete data.department_id;
+      delete data.password;
+    }
+    if (roleId == 2) {
+      delete data.id;
+    }
+    try {
+      const response = await axios.put(
+        roleId == 2
+          ? `http://localhost:3000/manager`
+          : 3`http://localhost:3000/manager/${
+              roleId == 3
+                ? "doctor"
+                : roleId == 4
+                ? "nurse"
+                : roleId == 5
+                ? "patient"
+                : "patient"
+            }/profile`,
+        data
+      );
+      if (response.status === 201 && response.data.status === 200) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -78,18 +143,23 @@ export function CreateUserForm({
               }}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              className="text-black"
-              type="password"
-              value={formData.password}
-              onChange={(e) => {
-                setFormData((prev) => ({ ...prev, password: e.target.value }));
-              }}
-            />
-          </div>
+          {!isUpdate && (
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                className="text-black"
+                type="password"
+                value={formData.password}
+                onChange={(e) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }));
+                }}
+              />
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -115,20 +185,22 @@ export function CreateUserForm({
               }}
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="department">Department</Label>
-            <select
-              className="w-full h-10 border border-gray-300 rounded-md text-black"
-              id="department"
-              onChange={(e) => {
-                setFormData((prev) => ({ ...prev, role_id: e.target.value }));
-              }}
-            >
-              {departmentList.map((data) => {
-                return <option value={data.id}>{data.name}</option>;
-              })}
-            </select>
-          </div>
+          {!isUpdate && (
+            <div className="space-y-2">
+              <Label htmlFor="department">Department</Label>
+              <select
+                className="w-full h-10 border border-gray-300 rounded-md text-black"
+                id="department"
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, role_id: e.target.value }));
+                }}
+              >
+                {departmentList.map((data) => {
+                  return <option value={data.id}>{data.name}</option>;
+                })}
+              </select>
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
             <select
@@ -143,6 +215,8 @@ export function CreateUserForm({
                   ? "Nurse"
                   : roleId == 5
                   ? "Patient"
+                  : roleId == 2
+                  ? "Manager"
                   : ""}
               </option>
             </select>
@@ -152,9 +226,9 @@ export function CreateUserForm({
             type="submit"
             onClick={() => {
               if (!isUpdate) {
-                // create api call
+                createUser(formData);
               } else {
-                // update api call
+                updateUser(formData);
               }
             }}
           >
