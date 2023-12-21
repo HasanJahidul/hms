@@ -17,9 +17,11 @@ import { UpdateManagerDto } from './dto/update-manager.dto';
 import { UpdateNurseDto } from './dto/update-nurse.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Manager } from './entities/manager.entity';
+import { Department } from 'src/department/entities/department.entity';
 
 @Injectable()
 export class ManagerService {
+  
   constructor(
     private readonly userService: UserService,
     private readonly doctorService: DoctorService,
@@ -32,8 +34,16 @@ export class ManagerService {
     @InjectRepository(Manager)
     private managerRepository: Repository<Manager>,
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Department)
+    private departmentRepository: Repository<Department>,
   ) {}
+  async findAllDepartment() {
+    const departments = await this.departmentRepository.find({
+      select: ['id', 'name'],
+    });
 
+    return departments;
+  }
   create(createManagerDto: CreateManagerDto) {
     return 'This action adds a new manager';
   }

@@ -51,10 +51,7 @@ export class PatientService {
           role: true,
         },
       });
-      return new ResponseHandler(
-        { count: allPatient.length, data: allPatient },
-        HttpStatus.OK,
-      );
+      return new ResponseHandler(allPatient, HttpStatus.OK);
     } catch (err) {
       console.log(err);
       return new ResponseHandler(

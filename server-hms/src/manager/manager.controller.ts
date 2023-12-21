@@ -85,4 +85,8 @@ export class ManagerController {
   updatePatientProfile(@Body() dto: UpdatePatientDto) {
     return this.managerService.updatePatient(dto);
   }
+  @Get('department')
+  findAllDepartment() {
+    return this.managerService.findAllDepartment();
+  }
 }

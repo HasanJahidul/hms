@@ -3,6 +3,7 @@ import { apiService } from "@/service";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const list = () => {
   const [userList, setUserList] = useState([]);
@@ -17,9 +18,9 @@ const list = () => {
       );
       console.log("Patient List", response);
 
+      const temp = [];
       if (response.status == 200) {
         response.data.message.forEach((element) => {
-          const temp = [];
           const data = {
             userId: element.id,
             userName: element.userDetails.name,
@@ -47,9 +48,9 @@ const list = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getPatientList();
-  // }, []);
+  useEffect(() => {
+    getPatientList();
+  }, []);
 
   return (
     <div>

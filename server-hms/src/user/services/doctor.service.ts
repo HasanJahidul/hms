@@ -84,7 +84,8 @@ export class DoctorService {
   async update(dto: UpdateDoctorDto) {
     try {
       const id = dto.id;
-      const emailCheck = this.userRepository.findOne({
+      console.log("dto",dto);
+      const emailCheck = await this.userRepository.findOne({
         where: {
           role: { id: 3 },
           is_active: true,
@@ -92,6 +93,7 @@ export class DoctorService {
           id: Not(dto.id),
         },
       });
+      console.log("emailCheck",emailCheck);
       if (emailCheck) {
         return new ResponseHandler(
           'Doctor with the same email already exist',

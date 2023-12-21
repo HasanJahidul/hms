@@ -28,7 +28,10 @@ export default function login() {
       const response = await axios.post("http://localhost:3000/auth/login", {
         email: email,
         password: password,
-      });
+      },{
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        withCredentials: true
+        });
       console.log("User Login", response);
 
       if (response.status == 201) {

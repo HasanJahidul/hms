@@ -3,6 +3,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { apiService } from "@/service";
 
 export function CreateUserForm({
   formTitle,
@@ -22,13 +24,16 @@ export function CreateUserForm({
     department_id: 0,
   });
 
-  const departmentList = [
-    { id: 1, name: "Heart" },
-    { id: 2, name: "Brain" },
-    { id: 3, name: "Stomach" },
-  ];
+  // const departmentList = await apiService.getDepartmentList();
+  const [departmentList, setDepartmentList] = useState([]);
+  const getDepartmentList = async () => {
+    const departmentList = await apiService.get("manager/department");
+    setDepartmentList(departmentList);
+    console.log("Department List", departmentList);
+  };
 
   useEffect(() => {
+    getDepartmentList();
     if (isUpdate && apiData != null) {
       setFormData((prev) => ({
         ...prev,
@@ -71,38 +76,29 @@ export function CreateUserForm({
         });
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error("error.response.data.message");
     }
   };
 
-  const updateUser = async (data) => {
-    if (data.department_id && data.password) {
-      delete data.department_id;
-      delete data.password;
-    }
-    if (roleId == 2) {
-      delete data.id;
-    }
+  const updateUser = async (data, roleId) => {
     try {
-      const response = await axios.put(
-        roleId == 2
-          ? `http://localhost:3000/manager`
-          : 3`http://localhost:3000/manager/${
-              roleId == 3
-                ? "doctor"
-                : roleId == 4
-                ? "nurse"
-                : roleId == 5
-                ? "patient"
-                : "patient"
-            }/profile`,
+      const response = await apiService.put(
+        roleId === 2
+          ? 'manager'
+          : `manager/${roleId === 3 ? 'doctor' : roleId === 4 ? 'nurse' : 'patient'}/profile`,
         data
       );
+  
       if (response.status === 201 && response.data.status === 200) {
         toast.success(response.data.message);
+      } else {
+        // Handle other response statuses or display an error message
+        toast.error('Failed to update user profile');
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      // Handle errors
+      console.error('Error updating user profile:', error);
+      toast.error('An error occurred while updating user profile');
     }
   };
 

@@ -1,6 +1,8 @@
 import { CreateUserForm } from "@/components/CreateUserForm";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { apiService } from "@/service";
 
 const update = () => {
   const router = useRouter();
@@ -8,12 +10,8 @@ const update = () => {
 
   const getDoctorDetails = async (id) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/manager/doctor?id=${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await apiService.get(`/manager/doctor?id=${id}`);
+      
       console.log("Doctor Details", response);
 
       if (response.status == 200) {
@@ -38,7 +36,7 @@ const update = () => {
         setData(data);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error("error.response.data.message");
       console.error("Error fetching doctor details:", error);
     }
   };

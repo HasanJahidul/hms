@@ -10,12 +10,20 @@ import { UserModule } from 'src/user/user.module';
 import { Manager } from './entities/manager.entity';
 import { ManagerController } from './manager.controller';
 import { ManagerService } from './manager.service';
+import { Department } from 'src/department/entities/department.entity';
 
 @Module({
   controllers: [ManagerController],
   providers: [ManagerService, SessionGuard, BaseEntity, ResponseHandler],
   imports: [
-    TypeOrmModule.forFeature([User, UserDetails, Roles, BaseEntity, Manager]),
+    TypeOrmModule.forFeature([
+      User,
+      UserDetails,
+      Roles,
+      BaseEntity,
+      Manager,
+      Department,
+    ]),
     forwardRef(() => UserModule),
   ],
 })

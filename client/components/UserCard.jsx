@@ -13,7 +13,9 @@ export function UserCard({ role, userList }) {
   const router = useRouter();
 
   return (
-    <div className="">
+    <>
+      <div className="text-2xl font-bold text-center" style={{ textTransform: 'capitalize' }}>{role} List</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
       {userList.map((data) => {
         return (
           <div className="mt-6 max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden text-black">
@@ -60,7 +62,7 @@ export function UserCard({ role, userList }) {
                   className="text-white bg-green-500"
                   onClick={() => {
                     router.push(
-                      `manager/${
+                      `/manager/${
                         role == "doctor"
                           ? "doctor-management"
                           : role == "nurse"
@@ -80,6 +82,8 @@ export function UserCard({ role, userList }) {
         );
       })}
     </div>
+    </>
+
   );
 }
 
