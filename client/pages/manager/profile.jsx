@@ -1,16 +1,15 @@
 import { CreateUserForm } from "@/components/CreateUserForm";
-import { useEffect } from "react";
+import { apiService } from "@/service";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const profile = () => {
   const [data, setData] = useState(null);
 
   const getProfileData = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/manager/profile",
-        {
-          withCredentials: true,
-        }
+      const response = await apiService.get(
+        "http://localhost:3000/manager/profile"
       );
       console.log("Manager Profile Details", response);
 
@@ -37,9 +36,9 @@ const profile = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     getProfileData();
-  //   }, []);
+  useEffect(() => {
+    getProfileData();
+  }, []);
 
   return (
     <div>

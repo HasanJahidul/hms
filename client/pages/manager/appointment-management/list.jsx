@@ -1,4 +1,5 @@
 import AppointmentTable from "@/components/AppointmentTable";
+import { apiService } from "@/service";
 import axios from "axios";
 import { useEffect, useState } from "react";
 const list = () => {
@@ -6,11 +7,8 @@ const list = () => {
 
   const getAllAppointmentList = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/appointments/get-all",
-        {
-          withCredentials: true,
-        }
+      const response = await apiService.get(
+        "http://localhost:3000/appointments/get-all"
       );
       console.log(response);
 
@@ -23,9 +21,9 @@ const list = () => {
     }
   };
 
-  // useEffect(() => {
-  //   getAllAppointmentList()
-  // }, [])
+  useEffect(() => {
+    getAllAppointmentList();
+  }, []);
 
   return (
     <div className="text-center">

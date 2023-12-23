@@ -50,7 +50,7 @@ export function CreateUserForm({
   const createUser = async (data) => {
     delete data.id;
     try {
-      const response = await axios.post(
+      const response = await apiService.post(
         `http://localhost:3000/manager/${
           roleId == 3
             ? "doctor"
