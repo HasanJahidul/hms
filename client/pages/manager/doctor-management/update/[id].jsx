@@ -36,13 +36,13 @@ const update = () => {
         setData(data);
       }
     } catch (error) {
-      toast.error("error.response.data.message");
+      toast.error(error.response.data.message);
       console.error("Error fetching doctor details:", error);
     }
   };
 
   useEffect(() => {
-    getDoctorDetails(router.query.id);
+    router.query.id && getDoctorDetails(router.query.id);
   }, [router]);
 
   return (

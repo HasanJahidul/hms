@@ -1,6 +1,8 @@
 import { CreateUserForm } from "@/components/CreateUserForm";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const update = () => {
   const router = useRouter();
@@ -44,7 +46,7 @@ const update = () => {
   };
 
   useEffect(() => {
-    getPatientDetails(router.query.id);
+    router.query.id && getPatientDetails(router.query.id);
   }, [router]);
 
   return (
