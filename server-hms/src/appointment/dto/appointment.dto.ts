@@ -10,7 +10,7 @@ export class CreateAppointmentDto {
   @IsNotEmpty()
   doctorId: number;
 
-  @IsDateString()
+  @IsNumber()
   @IsNotEmpty()
   availableAppointmentId: number;
 
