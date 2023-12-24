@@ -1,6 +1,5 @@
 import { UserListing } from "@/components/UserListing"
 import { apiService } from "@/service"
-import axios from "axios"
 import { getCookie } from "cookies-next"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -10,12 +9,9 @@ const NurseList = () => {
 
 	const getNurseList = async () => {
 		try {
-			const response = await axios.get(
-				"http://localhost:3000/manager/nurse/list",
-				{
-					withCredentials: true,
-				}
-			)
+			const response = await apiService.get("manager/nurse/list", {
+				withCredentials: true,
+			})
 			console.log("Nurse List", response)
 
 			const temp = []

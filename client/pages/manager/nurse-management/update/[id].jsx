@@ -1,5 +1,5 @@
-import { CreateUserForm } from "@/components/CreateUserForm"
-import axios from "axios"
+import { CreateOrUpdateUserForm } from "@/components/CreateOrUpdateUserForm"
+import { apiService } from "@/service"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -10,12 +10,9 @@ const UpdateNurse = () => {
 
 	const getNurseDetails = async id => {
 		try {
-			const response = await axios.get(
-				`http://localhost:3000/manager/nurse?id=${id}`,
-				{
-					withCredentials: true,
-				}
-			)
+			const response = await apiService.get(`manager/nurse?id=${id}`, {
+				withCredentials: true,
+			})
 			console.log("Nurse Details", response)
 
 			if (response.status == 200) {
@@ -51,7 +48,7 @@ const UpdateNurse = () => {
 
 	return (
 		<section className="flex flex-col justify-center items-center grow">
-			<CreateUserForm
+			<CreateOrUpdateUserForm
 				formTitle={"nurse"}
 				role={"nurse"}
 				roleId={4}

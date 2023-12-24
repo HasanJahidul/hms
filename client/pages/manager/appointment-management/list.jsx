@@ -13,9 +13,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { apiService } from "@/service"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
 const AppointmentList = () => {
 	const [availableSlotsModalIsOpen, setAvailableSlotsModalIsOpen] =
 		useState(false)
@@ -29,9 +29,7 @@ const AppointmentList = () => {
 
 	const getAllAppointmentList = async () => {
 		try {
-			const response = await apiService.get(
-				"appointments/get-all"
-			)
+			const response = await apiService.get("appointments/get-all")
 			console.log(response)
 
 			if (response.status == 200) {
@@ -45,9 +43,7 @@ const AppointmentList = () => {
 
 	const getAllDoctorList = async () => {
 		try {
-			const response = await apiService.get(
-				"manager/doctor/list"
-			)
+			const response = await apiService.get("manager/doctor/list")
 			console.log(response)
 
 			if (response.status == 200) {
@@ -61,9 +57,7 @@ const AppointmentList = () => {
 
 	const getAllPatientList = async () => {
 		try {
-			const response = await apiService.get(
-				"manager/patient/list"
-			)
+			const response = await apiService.get("manager/patient/list")
 			console.log(response)
 
 			if (response.status == 200) {
@@ -77,7 +71,7 @@ const AppointmentList = () => {
 
 	const handleAssignSlots = async () => {
 		try {
-			const response = await axios.post(
+			const response = await apiService.post(
 				"appointments/available",
 				availableSlots
 			)
@@ -96,7 +90,7 @@ const AppointmentList = () => {
 
 	const handleCreateAppointment = async () => {
 		try {
-			const response = await axios.post(
+			const response = await apiService.post(
 				"appointments/make-appointment",
 				createAppointment
 			)
@@ -175,7 +169,7 @@ const AppointmentList = () => {
 				setIsOpen={setCreateAppointmentModalIsOpen}
 			>
 				<div className="space-y-4 flex flex-col">
-					<h3 className="text-2xl text-slate-50">Create Appointments</h3>
+					<h3 className="text-2xl text-slate-900 dark:text-slate-50">Create Appointments</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
@@ -286,7 +280,7 @@ const AppointmentList = () => {
 				setIsOpen={setAvailableSlotsModalIsOpen}
 			>
 				<div className="space-y-4 flex flex-col">
-					<h3 className="text-2xl text-slate-50">Assign Available Slots</h3>
+					<h3 className="text-2xl text-slate-900 dark:text-slate-50">Assign Available Slots</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)

@@ -1,4 +1,4 @@
-import { CreateUserForm } from "@/components/CreateUserForm"
+import { CreateOrUpdateUserForm } from "@/components/CreateOrUpdateUserForm"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -47,7 +47,7 @@ const UpdateDoctor = () => {
 
 	return (
 		<section className="flex flex-col justify-center items-center grow">
-			<CreateUserForm
+			<CreateOrUpdateUserForm
 				formTitle={"doctor"}
 				role={"doctor"}
 				roleId={3}

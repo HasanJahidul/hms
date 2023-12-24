@@ -1,6 +1,5 @@
 import { UserListing } from "@/components/UserListing"
 import { apiService } from "@/service"
-import axios from "axios"
 import { getCookie } from "cookies-next"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"

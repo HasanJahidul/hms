@@ -1,6 +1,5 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/router"
 
@@ -9,12 +8,44 @@ export function UserListing({ role, userList }) {
 
 	return (
 		<>
-			<div
+			<div className="container grid grid-cols-2">
+				<div>
+					<h3 className="text-4xl capitalize">{role} List</h3>
+				</div>
+				<div className="flex justify-end gap-4">
+					<a
+						className="capitalize bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+						href={
+							role == "doctor"
+								? "/manager/doctor-management/create"
+								: role == "nurse"
+								? "/manager/nurse-management/create"
+								: role == "patient"
+								? "/manager/patient-management/create"
+								: "/manager/doctor-management/create"
+						}
+					>
+						Create {role}
+					</a>
+
+					{/* <Button
+						size="sm"
+						className="w-32 h-9 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-3 rounded"
+						onClick={() => {
+							setAvailableSlotsModalIsOpen(true)
+						}}
+					>
+						Assign Slots
+					</Button> */}
+				</div>
+			</div>
+
+			{/* <div
 				className="text-2xl font-bold text-center"
 				style={{ textTransform: "capitalize" }}
 			>
 				{role} List
-			</div>
+			</div> */}
 
 			<div className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
 				{userList.map((data, index) => {
@@ -23,7 +54,7 @@ export function UserListing({ role, userList }) {
 							key={index}
 							className="max-w-sm mx-auto bg-slate-50 rounded overflow-hidden text-gray-900 border border-gray-700 dark:bg-gray-800 dark:border-slate-700 dark:text-gray-100 w-full"
 						>
-							<Card className="border-0">
+							<Card className="border-0 h-full flex flex-col">
 								<CardHeader className="flex items-center gap-3">
 									<Avatar className="h-16 w-16">
 										<AvatarImage
@@ -56,7 +87,7 @@ export function UserListing({ role, userList }) {
 										</div>
 									</div>
 								</CardContent>
-								<CardFooter className="flex justify-between">
+								<CardFooter className="flex justify-between mt-auto">
 									<Button
 										size="sm"
 										className="text-white bg-blue-500 hover:bg-blue-700 w-full !rounded"
