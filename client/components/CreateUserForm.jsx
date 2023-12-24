@@ -20,16 +20,28 @@ export function CreateUserForm({
     password: "",
     address: "",
     phone: "",
-    role_id: roleId,
+    role_id: parseInt(roleId),
     department_id: 0,
   });
 
   // const departmentList = await apiService.getDepartmentList();
   const [departmentList, setDepartmentList] = useState([]);
   const getDepartmentList = async () => {
-    const departmentList = await apiService.get("manager/department");
-    setDepartmentList(departmentList);
-    console.log("Department List", departmentList);
+    try {
+      const response = await apiService.get("manager/department");
+      console.log("Department List", response);
+
+      if (response.status == 200) {
+        setDepartmentList(response.data);
+        setFormData((prev) => ({
+          ...prev,
+          department_id: response.data[0].id,
+        }));
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.error("Error Fetching Department List", error);
+    }
   };
 
   useEffect(() => {
@@ -51,7 +63,7 @@ export function CreateUserForm({
     delete data.id;
     try {
       const response = await apiService.post(
-        `http://localhost:3000/manager/${
+        `manager/${
           roleId == 3
             ? "doctor"
             : roleId == 4
@@ -62,8 +74,8 @@ export function CreateUserForm({
         }`,
         data
       );
-      if (response.status === 201 && response.data.status === 200) {
-        toast.success(response.data.message);
+      if (response.status === 201 || response.data.status === 200) {
+        toast.success("Doctor Created Successfully");
         setFormData({
           id: 0,
           name: "",
@@ -76,29 +88,43 @@ export function CreateUserForm({
         });
       }
     } catch (error) {
-      toast.error("error.response.data.message");
+      toast.error(error.response.data.message);
     }
   };
 
   const updateUser = async (data, roleId) => {
+    delete data.password;
+    delete data.department_id;
     try {
       const response = await apiService.put(
         roleId === 2
-          ? 'manager'
-          : `manager/${roleId === 3 ? 'doctor' : roleId === 4 ? 'nurse' : 'patient'}/profile`,
+          ? "manager"
+          : `manager/${
+              roleId === 3 ? "doctor" : roleId === 4 ? "nurse" : "patient"
+            }/profile`,
         data
       );
-  
-      if (response.status === 201 && response.data.status === 200) {
-        toast.success(response.data.message);
+
+      if (response.status === 201 || response.data.status === 200) {
+        toast.success(
+          `Updated ${
+            roleId == 3
+              ? "Doctor"
+              : roleId == 4
+              ? "Nurse"
+              : roleId == 5
+              ? "Patient"
+              : "User"
+          } Successfully!`
+        );
       } else {
         // Handle other response statuses or display an error message
-        toast.error('Failed to update user profile');
+        toast.error("Failed to update user profile");
       }
     } catch (error) {
       // Handle errors
-      console.error('Error updating user profile:', error);
-      toast.error('An error occurred while updating user profile');
+      console.error("Error updating user profile:", error);
+      toast.error("An error occurred while updating user profile");
     }
   };
 
@@ -191,8 +217,12 @@ export function CreateUserForm({
                   setFormData((prev) => ({ ...prev, role_id: e.target.value }));
                 }}
               >
-                {departmentList.map((data) => {
-                  return <option value={data.id}>{data.name}</option>;
+                {departmentList.map((data, index) => {
+                  return (
+                    <option key={index} value={data.id}>
+                      {data.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
