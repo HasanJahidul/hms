@@ -131,6 +131,7 @@ const AppointmentList = () => {
 				</div>
 				<div className="flex justify-end gap-4">
 					<Button
+						size="sm"
 						className="w-40 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
 						onClick={() => {
 							setCreateAppointmentModalIsOpen(true)
@@ -140,7 +141,8 @@ const AppointmentList = () => {
 					</Button>
 
 					<Button
-						className="w-32 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+						size="sm"
+						className="w-32 h-9 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-3 rounded"
 						onClick={() => {
 							setAvailableSlotsModalIsOpen(true)
 						}}
@@ -151,7 +153,21 @@ const AppointmentList = () => {
 			</div>
 
 			{/* // - appointment table */}
-			<AppointmentTable data={appointmentList} />
+			<AppointmentTable
+				data={
+					isEmpty(appointmentList)
+						? [
+								// {
+								// 	appointmentId: "1",
+								// 	doctorName: "Md. Shafayet Kabir",
+								// 	patientName: "Sobhan Ahmed",
+								// 	date: "2021-10-10",
+								// 	time: "10:00 AM",
+								// },
+						  ]
+						: appointmentList
+				}
+			/>
 
 			{/* // + create appointment modal */}
 			<Modal
