@@ -7,6 +7,7 @@ import { UpdateDoctorDto } from 'src/manager/dto/update-doctor.dto';
 import { Not, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { DoctorMapper } from '../mapper/doctor.mapper';
+import { Roles } from '../entities/role.entity';
 
 @Injectable()
 export class DoctorService {
@@ -29,7 +30,7 @@ export class DoctorService {
       const doctor = this.doctorMapper.dtoToEntity(dto);
       const entity = this.userRepository.create(doctor);
       await this.userRepository.save(entity);
-      await this.emailService.sendMail(dto.email,"HMS","Welcome as a doctor");
+      await this.emailService.sendMail(dto.email, 'HMS', 'Welcome as a doctor');
       return new ResponseHandler(
         'Doctor Created Successfully',
         HttpStatus.CREATED,
@@ -84,7 +85,7 @@ export class DoctorService {
   async update(dto: UpdateDoctorDto) {
     try {
       const id = dto.id;
-      console.log("dto",dto);
+      console.log('dto', dto);
       const emailCheck = await this.userRepository.findOne({
         where: {
           role: { id: 3 },
@@ -93,7 +94,7 @@ export class DoctorService {
           id: Not(dto.id),
         },
       });
-      console.log("emailCheck",emailCheck);
+      console.log('emailCheck', emailCheck);
       if (emailCheck) {
         return new ResponseHandler(
           'Doctor with the same email already exist',

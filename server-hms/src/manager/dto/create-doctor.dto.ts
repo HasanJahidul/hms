@@ -27,7 +27,5 @@ export class CreateDoctorDto {
   @Matches(/^[0-9]{11}$/)
   phone: string;
   @IsNumber()
-  role_id: number;
-  @IsNumber()
   department_id: number;
 }

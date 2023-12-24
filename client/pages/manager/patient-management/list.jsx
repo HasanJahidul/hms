@@ -9,15 +9,9 @@ const PatientList = () => {
 
 	const getPatientList = async () => {
 		try {
-<<<<<<< HEAD
 			const response = await apiService.get("manager/patient/list", {
 				withCredentials: true,
 			})
-=======
-			const response = await apiService.get(
-				"manager/patient/list"
-			)
->>>>>>> 1c40292 (appoinment listing)
 			console.log("Patient List", response)
 
 			const temp = []

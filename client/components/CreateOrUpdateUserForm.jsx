@@ -74,7 +74,7 @@ export function CreateOrUpdateUserForm({
 				data
 			)
 			if (response.status === 201 || response.data.status === 200) {
-				toast.success("Doctor Created Successfully")
+				toast.success(response.data.message)
 				setFormData({
 					id: 0,
 					name: "",
