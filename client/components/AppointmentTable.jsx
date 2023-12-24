@@ -25,41 +25,49 @@ const AppointmentTable = ({ data = [] }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>
-					{data.map(element => {
-						return (
-							<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-								<td className="px-6 py-4">{element.doctorName}</td>
-								<td className="px-6 py-4">{element.patientName}</td>
-								<td className="px-6 py-4">
-									{format(new Date(element.date), "dd MMM yyyy")}
-								</td>
-								<td className="px-6 py-4">{element.time}</td>
-								<td className="px-6 py-4 flex gap-2">
-									<a
-										className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-										href={`/manager/appointment-management/update/${element.appointmentId}`}
-									>
-										Update
-									</a>
+				{!isEmpty(data) ? (
+          <tbody>
+            {data.map((element) => (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={element.id}>
+                <td className="px-6 py-4">{element.doctor.userDetails.name}</td>
+                <td className="px-6 py-4">{element.patient.userDetails.name}</td>
+                <td className="px-6 py-4">
+                  {format(new Date(element.availableAppointment.dateTime), "dd MMM yyyy")}
+                </td>
+                <td className="px-6 py-4">{format(new Date(element.availableAppointment.dateTime), 'h:mm a')}</td>
+                <td className="px-6 py-4 flex gap-2">
+                  <a
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    href={`/manager/appointment-management/update/${element.id}`}
+                  >
+                    Update
+                  </a>
 
-									<Button
-										size="sm"
-										className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded"
-										onClick={() => {
-											console.log("delete")
-										}}
-									>
-										Delete
-									</Button>
-								</td>
-							</tr>
-						)
-					})}
-				</tbody>
-			</table>
-		</div>
-	)
-}
+                  <Button
+                    size="sm"
+                    className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => {
+                      console.log("delete");
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td className="px-6 py-4" colSpan="5">
+                No data found
+              </td>
+            </tr>
+          </tbody>
+        )}
+      </table>
+    </div>
+  );
+};
 
-export default AppointmentTable
+export default AppointmentTable;

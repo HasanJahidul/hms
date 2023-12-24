@@ -21,7 +21,6 @@ import { Department } from 'src/department/entities/department.entity';
 
 @Injectable()
 export class ManagerService {
-  
   constructor(
     private readonly userService: UserService,
     private readonly doctorService: DoctorService,
@@ -68,7 +67,7 @@ export class ManagerService {
   async update(dto: UpdateManagerDto) {
     try {
       const id = this.userService.getCurrentUserId();
-      const emailCheck = this.userRepository.findOne({
+      const emailCheck = await this.userRepository.findOne({
         where: {
           role: { id: 4 },
           is_active: true,
@@ -76,6 +75,7 @@ export class ManagerService {
           id: Not(id),
         },
       });
+      console.log('emailCheck', emailCheck);
       if (emailCheck) {
         return new ResponseHandler(
           'Manager with the same email already exist',
@@ -138,13 +138,25 @@ export class ManagerService {
       console.log(e);
     }
   }
-  findAllPatient() {
-    return this.patientService.findAll();
+  async findAllPatient() {
+    try {
+      return await this.patientService.findAll();
+    } catch (e) {
+      console.log(e);
+    }
   }
-  findOnePatient(id: number) {
-    return this.patientService.findOne(id);
+  async findOnePatient(id: number) {
+    try {
+      return await this.patientService.findOne(id);
+    } catch (e) {
+      console.log(e);
+    }
   }
-  updatePatient(updateDoctorDto: UpdatePatientDto) {
-    return this.patientService.update(updateDoctorDto);
+  async updatePatient(updateDoctorDto: UpdatePatientDto) {
+    try {
+      return await this.patientService.update(updateDoctorDto);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

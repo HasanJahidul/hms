@@ -26,6 +26,7 @@ const AppointmentList = () => {
 	const [patientList, setAllPatientList] = useState([])
 	const [availableSlots, setAvailableSlots] = useState({})
 	const [createAppointment, setCreateAppointment] = useState({})
+	const [loading, setLoading] = useState(true);
 
 	const getAllAppointmentList = async () => {
 		try {
@@ -33,11 +34,13 @@ const AppointmentList = () => {
 			console.log(response)
 
 			if (response.status == 200) {
-				setAllAppointmentList(response.data.message)
+				setAllAppointmentList(response.data)
 			}
 		} catch (error) {
 			console.log("Error Fetching Appointment List:", error)
 			toast.error(error.response.data.message)
+		}finally{
+			setLoading(false)
 		}
 	}
 
@@ -147,21 +150,25 @@ const AppointmentList = () => {
 			</div>
 
 			{/* // - appointment table */}
-			<AppointmentTable
-				data={
-					isEmpty(appointmentList)
-						? [
-								// {
-								// 	appointmentId: "1",
-								// 	doctorName: "Md. Shafayet Kabir",
-								// 	patientName: "Sobhan Ahmed",
-								// 	date: "2021-10-10",
-								// 	time: "10:00 AM",
-								// },
-						  ]
-						: appointmentList
-				}
-			/>
+			{loading ? (
+        		<div>Loading...</div>
+			) : (
+				<AppointmentTable
+					data={
+						isEmpty(appointmentList)
+							? [
+									// {
+									// 	appointmentId: "1",
+									// 	doctorName: "Md. Shafayet Kabir",
+									// 	patientName: "Sobhan Ahmed",
+									// 	date: "2021-10-10",
+									// 	time: "10:00 AM",
+									// },
+							]
+							: appointmentList
+					}
+				/>
+			)}
 
 			{/* // + create appointment modal */}
 			<Modal

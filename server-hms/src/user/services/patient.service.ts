@@ -55,7 +55,7 @@ export class PatientService {
     } catch (err) {
       console.log(err);
       return new ResponseHandler(
-        'Error Fetching Patients',
+        'Error Fetching Patient List',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

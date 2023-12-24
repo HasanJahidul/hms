@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import { CreateOrUpdateUserForm } from "@/components/CreateOrUpdateUserForm"
 import { apiService } from "@/service"
+=======
+import { CreateUserForm } from "@/components/CreateUserForm"
+>>>>>>> 1c40292 (appoinment listing)
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { apiService } from "@/service"
 
 const UpdateNurse = () => {
 	const router = useRouter()
@@ -10,9 +15,15 @@ const UpdateNurse = () => {
 
 	const getNurseDetails = async id => {
 		try {
+<<<<<<< HEAD
 			const response = await apiService.get(`manager/nurse?id=${id}`, {
 				withCredentials: true,
 			})
+=======
+			const response = await apiService.get(
+				`manager/nurse?id=${id}`
+			)
+>>>>>>> 1c40292 (appoinment listing)
 			console.log("Nurse Details", response)
 
 			if (response.status == 200) {
@@ -37,7 +48,7 @@ const UpdateNurse = () => {
 				setData(data)
 			}
 		} catch (error) {
-			toast.error(error.response.data.message)
+			// toast.error(error.response.data.message)
 			console.error("Error fetching nurse details:", error)
 		}
 	}

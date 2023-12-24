@@ -23,15 +23,20 @@ export class AppointmentService {
     @InjectRepository(User)
     private userRepositoy: Repository<User>,
   ) {}
-  getAllAppointments() {
-    return this.appointmentRepository.find();
+  // getAllAppointments() {
+  //   return this.appointmentRepository.find();
+  // }
+  async getAllAppointments() {
+    return this.appointmentRepository.find({
+      relations: ['doctor', 'patient', 'availableAppointment'],
+    });
   }
 
   getAppointmentById(id: number) {
     console.log('getAppointmentById', +id);
     return this.appointmentRepository.findOne({
       where: { id },
-      relations: ['service', 'doctor', 'patient'],
+      relations: ['doctor', 'patient', 'availableAppointment'],
     });
   }
 

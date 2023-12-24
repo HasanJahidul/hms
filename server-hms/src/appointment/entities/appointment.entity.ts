@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/entities/baseEntity.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { AvailableAppointment } from './availableAppointment.entity';
 
 @Entity()
@@ -17,10 +17,10 @@ export class Appointment extends BaseEntity {
 
   @OneToOne(
     () => AvailableAppointment,
-    (appointment) => appointment.appointment,
+    (availableAppointment) => availableAppointment.appointment,
   )
+  @JoinColumn()
   availableAppointment: AvailableAppointment;
-
   @ManyToOne(() => User, (patient) => patient.appointments)
   patient: User;
 }

@@ -82,7 +82,7 @@ export class NurseService {
   async update(dto: UpdateNurseDto) {
     try {
       const id = dto.id;
-      const emailCheck = this.userRepository.findOne({
+      const emailCheck = await this.userRepository.findOne({
         where: {
           role: { id: 4 },
           is_active: true,

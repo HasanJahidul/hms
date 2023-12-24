@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axiosConfig.js";
 import { baseApiUrl, baseUrl } from "../const";
 
 export const jsxService = () =>

@@ -9,7 +9,7 @@ const DoctorList = () => {
 	const [userList, setUserList] = useState([])
 	const getDoctorList = async () => {
 		try {
-			const response = await apiService.get("/manager/doctor/list")
+			const response = await apiService.get("manager/doctor/list")
 
 			console.log("Doctor List", response)
 
