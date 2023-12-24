@@ -103,8 +103,8 @@ export function CreateUserForm({
   };
 
   return (
-    <div className="mx-auto max-w-md space-y-6">
-      <Card className="space-y-2">
+    <div className="max-w-md min-w-[420px] space-y-6">
+      <Card className="space-y-2 border-gray-700 dark:bg-gray-800 dark:border-slate-700">
         <CardHeader className="text-center">
           <h1 className="text-3xl font-bold">
             {!isUpdate ? "Create" : "Update"} {formTitle}
@@ -218,7 +218,7 @@ export function CreateUserForm({
             </select>
           </div>
           <Button
-            className="w-full bg-green-500 text-white"
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white"
             type="submit"
             onClick={() => {
               if (!isUpdate) {

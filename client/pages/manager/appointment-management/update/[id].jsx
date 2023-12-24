@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 
-const update = () => {
-  const router = useRouter();
-  console.log(router.query.id);
-};
+const UpdateAppointment = () => {
+	const router = useRouter()
+	console.log(router.query.id)
+}
 
-export default update;
+export default UpdateAppointment

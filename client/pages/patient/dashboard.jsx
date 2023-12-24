@@ -1,5 +1,9 @@
 const dashboard = () => {
-  return <div className="text-center">Welcome to Patient Dashboard</div>;
-};
+	return (
+		<section className="flex grow justify-center items-center">
+			Welcome to Patient Dashboard
+		</section>
+	)
+}
 
-export default dashboard;
+export default dashboard

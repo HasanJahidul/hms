@@ -1,11 +1,11 @@
-import { CreateUserForm } from "@/components/CreateUserForm";
+import { CreateUserForm } from "@/components/CreateUserForm"
 
-const create = () => {
-  return (
-    <div>
-      <CreateUserForm formTitle={"doctor"} roleId={3} role={"doctor"} />
-    </div>
-  );
-};
+const CreateDoctor = () => {
+	return (
+		<section className="flex flex-col justify-center items-center grow">
+			<CreateUserForm formTitle={"doctor"} roleId={3} role={"doctor"} />
+		</section>
+	)
+}
 
-export default create;
+export default CreateDoctor

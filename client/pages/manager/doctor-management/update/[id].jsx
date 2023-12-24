@@ -1,61 +1,61 @@
-import { CreateUserForm } from "@/components/CreateUserForm";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { apiService } from "@/service";
+import { CreateUserForm } from "@/components/CreateUserForm"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import { apiService } from "@/service"
 
-const update = () => {
-  const router = useRouter();
-  const [data, setData] = useState(null);
+const UpdateDoctor = () => {
+	const router = useRouter()
+	const [data, setData] = useState(null)
 
-  const getDoctorDetails = async (id) => {
-    try {
-      const response = await apiService.get(`/manager/doctor?id=${id}`);
-      
-      console.log("Doctor Details", response);
+	const getDoctorDetails = async id => {
+		try {
+			const response = await apiService.get(`/manager/doctor?id=${id}`)
 
-      if (response.status == 200) {
-        const data = {
-          userId: response.data.message.id,
-          userName: response.data.message.userDetails.name,
-          userAddress: response.data.message.userDetails.address,
-          userPhone: response.data.message.userDetails.phone,
-          userAvatar: response.data.message.userDetails.avatar,
-          email: response.data.message.email,
-          isActive: response.data.message.is_active,
-          departmentId: response.data.message.department.id,
-          departmentName: response.data.message.department.name,
-          departmentDescription: response.data.message.department.description,
-          services: response.data.message.services,
-          appointments: response.data.message.appointments,
-          availableAppointments: response.data.message.availableAppointments,
-          roleId: response.data.message.role.id,
-          roleName: response.data.message.role.name,
-        };
+			console.log("Doctor Details", response)
 
-        setData(data);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-      console.error("Error fetching doctor details:", error);
-    }
-  };
+			if (response.status == 200) {
+				const data = {
+					userId: response.data.message.id,
+					userName: response.data.message.userDetails.name,
+					userAddress: response.data.message.userDetails.address,
+					userPhone: response.data.message.userDetails.phone,
+					userAvatar: response.data.message.userDetails.avatar,
+					email: response.data.message.email,
+					isActive: response.data.message.is_active,
+					departmentId: response.data.message.department.id,
+					departmentName: response.data.message.department.name,
+					departmentDescription: response.data.message.department.description,
+					services: response.data.message.services,
+					appointments: response.data.message.appointments,
+					availableAppointments: response.data.message.availableAppointments,
+					roleId: response.data.message.role.id,
+					roleName: response.data.message.role.name,
+				}
 
-  useEffect(() => {
-    router.query.id && getDoctorDetails(router.query.id);
-  }, [router]);
+				setData(data)
+			}
+		} catch (error) {
+			toast.error(error.response.data.message)
+			console.error("Error fetching doctor details:", error)
+		}
+	}
 
-  return (
-    <div className="">
-      <CreateUserForm
-        formTitle={"doctor"}
-        role={"doctor"}
-        roleId={3}
-        apiData={data}
-        isUpdate={true}
-      />
-    </div>
-  );
-};
+	useEffect(() => {
+		router.query.id && getDoctorDetails(router.query.id)
+	}, [router])
 
-export default update;
+	return (
+		<section className="flex flex-col justify-center items-center grow">
+			<CreateUserForm
+				formTitle={"doctor"}
+				role={"doctor"}
+				roleId={3}
+				apiData={data}
+				isUpdate={true}
+			/>
+		</section>
+	)
+}
+
+export default UpdateDoctor

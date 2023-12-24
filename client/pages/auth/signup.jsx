@@ -117,19 +117,19 @@ const signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
+        {/* <div className="text-center mb-10">
           <h1 className="font-bold text-4xl bg-blue-600">HMS</h1>
           <p className="text-gray-500">
             Welcome to HMS. Please Sign Up to continue.
           </p>
-        </div>
+        </div> */}
         <Card className="mx-auto w-full bg-[#ffffff] p-6 rounded-lg shadow-lg">
-          <CardHeader>
+          <CardHeader className="space-y-4">
             <CardTitle className="text-2xl bg-blue-600 text-center">
               Sign Up
             </CardTitle>
-            <CardDescription className="text-black">
-              Please enter your credentials to create your account.
+            <CardDescription className="text-gray-500">
+              Welcome to HMS. Please Sign Up to continue.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

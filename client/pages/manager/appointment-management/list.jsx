@@ -16,7 +16,7 @@ import { apiService } from "@/service"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
-const list = () => {
+const AppointmentList = () => {
 	const [availableSlotsModalIsOpen, setAvailableSlotsModalIsOpen] =
 		useState(false)
 	const [createAppointmentModalIsOpen, setCreateAppointmentModalIsOpen] =
@@ -106,10 +106,13 @@ const list = () => {
 			if (response.status == 201) {
 				toast.success(response.data.message)
 				setCreateAppointmentModalIsOpen(false)
+				return
 			}
+
+			toast.error(response.data.message.join(" | "))
 		} catch (error) {
 			console.log("Error Creating Appointment:", error)
-			toast.error(error.response.data.message)
+			toast.error(error.response.data.message.join(" | "))
 		}
 	}
 
@@ -120,12 +123,13 @@ const list = () => {
 	}, [])
 
 	return (
-		<div className="text-center space-y-5">
+		<section className="container flex flex-col grow mt-10 space-y-8">
+			{/* // - topbar */}
 			<div className="grid grid-cols-2">
 				<div>
-					<h3>Appointment List</h3>
+					<h3 className="text-4xl">Appointment List</h3>
 				</div>
-				<div className="flex justify-end gap-2">
+				<div className="flex justify-end gap-4">
 					<Button
 						className="w-40 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
 						onClick={() => {
@@ -146,87 +150,16 @@ const list = () => {
 				</div>
 			</div>
 
+			{/* // - appointment table */}
 			<AppointmentTable data={appointmentList} />
 
-			<Modal
-				isOpen={availableSlotsModalIsOpen}
-				setIsOpen={setAvailableSlotsModalIsOpen}
-			>
-				<div className="space-y-2 flex flex-col">
-					<h3>Assign Available Slots</h3>
-					<Select
-						onValueChange={val => {
-							console.log("doc id", val)
-
-							setAvailableSlots(prev => {
-								return {
-									...prev,
-									doctorId: val,
-								}
-							})
-						}}
-					>
-						<SelectTrigger className="w-full">
-							<SelectValue placeholder="Select a doctor" />
-						</SelectTrigger>
-						<SelectContent>
-							{doctorList.map(doctor => {
-								return (
-									<SelectItem
-										key={doctor.id}
-										value={doctor.id}
-										className="text-slate-50"
-									>
-										{doctor.userDetails.name}
-									</SelectItem>
-								)
-							})}
-						</SelectContent>
-					</Select>
-
-					<RangeDatePicker
-						onChange={date => {
-							console.log("date range", date)
-
-							const dates = map(
-								eachDayOfInterval({ start: date?.from, end: date?.to }),
-								day => day.toISOString()
-							)
-
-							console.log("dates", dates)
-
-							const formattedDates = dates.map(dateStr => {
-								return {
-									dateTime: dateStr,
-								}
-							})
-
-							console.log("formattedDates", formattedDates)
-
-							setAvailableSlots(prev => {
-								return {
-									...prev,
-									availableSlots: formattedDates,
-								}
-							})
-						}}
-					/>
-
-					<Button
-						className="w-32 ml-auto bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
-						onClick={handleAssignSlots}
-					>
-						Assign
-					</Button>
-				</div>
-			</Modal>
-
+			{/* // + create appointment modal */}
 			<Modal
 				isOpen={createAppointmentModalIsOpen}
 				setIsOpen={setCreateAppointmentModalIsOpen}
 			>
-				<div className="space-y-2 flex flex-col">
-					<h3>Create Appointments</h3>
+				<div className="space-y-4 flex flex-col">
+					<h3 className="text-2xl text-slate-50">Create Appointments</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
@@ -323,15 +256,90 @@ const list = () => {
 					</Select>
 
 					<Button
-						className="w-32 ml-auto bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+						className="w-32 ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 						onClick={handleCreateAppointment}
 					>
 						Create
 					</Button>
 				</div>
 			</Modal>
-		</div>
+
+			{/* // + assign appointment slots modal */}
+			<Modal
+				isOpen={availableSlotsModalIsOpen}
+				setIsOpen={setAvailableSlotsModalIsOpen}
+			>
+				<div className="space-y-4 flex flex-col">
+					<h3 className="text-2xl text-slate-50">Assign Available Slots</h3>
+					<Select
+						onValueChange={val => {
+							console.log("doc id", val)
+
+							setAvailableSlots(prev => {
+								return {
+									...prev,
+									doctorId: val,
+								}
+							})
+						}}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="Select a doctor" />
+						</SelectTrigger>
+						<SelectContent>
+							{doctorList.map(doctor => {
+								return (
+									<SelectItem
+										key={doctor.id}
+										value={doctor.id}
+										className="text-slate-50"
+									>
+										{doctor.userDetails.name}
+									</SelectItem>
+								)
+							})}
+						</SelectContent>
+					</Select>
+
+					<RangeDatePicker
+						onChange={date => {
+							console.log("date range", date)
+
+							const dates = map(
+								eachDayOfInterval({ start: date?.from, end: date?.to }),
+								day => day.toISOString()
+								// day => format(day, 'yyyy-MM-dd') // doesn't work either
+							)
+
+							console.log("dates", dates)
+
+							const formattedDates = dates.map(dateStr => {
+								return {
+									dateTime: dateStr,
+								}
+							})
+
+							console.log("formattedDates", formattedDates)
+
+							setAvailableSlots(prev => {
+								return {
+									...prev,
+									availableSlots: formattedDates,
+								}
+							})
+						}}
+					/>
+
+					<Button
+						className="w-32 ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+						onClick={handleAssignSlots}
+					>
+						Assign
+					</Button>
+				</div>
+			</Modal>
+		</section>
 	)
 }
 
-export default list
+export default AppointmentList

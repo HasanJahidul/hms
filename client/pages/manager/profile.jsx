@@ -41,7 +41,7 @@ const profile = () => {
   }, []);
 
   return (
-    <div>
+    <section className="flex flex-col justify-center items-center grow">
       <CreateUserForm
         formTitle={"manager"}
         role={"manager"}
@@ -49,7 +49,7 @@ const profile = () => {
         isUpdate={true}
         apiData={data}
       />
-    </div>
+    </section>
   );
 };
 
