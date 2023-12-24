@@ -30,7 +30,7 @@ const AppointmentList = () => {
 	const getAllAppointmentList = async () => {
 		try {
 			const response = await apiService.get(
-				"http://localhost:3000/appointments/get-all"
+				"appointments/get-all"
 			)
 			console.log(response)
 
@@ -46,7 +46,7 @@ const AppointmentList = () => {
 	const getAllDoctorList = async () => {
 		try {
 			const response = await apiService.get(
-				"http://localhost:3000/manager/doctor/list"
+				"manager/doctor/list"
 			)
 			console.log(response)
 
@@ -62,7 +62,7 @@ const AppointmentList = () => {
 	const getAllPatientList = async () => {
 		try {
 			const response = await apiService.get(
-				"http://localhost:3000/manager/patient/list"
+				"manager/patient/list"
 			)
 			console.log(response)
 
@@ -78,7 +78,7 @@ const AppointmentList = () => {
 	const handleAssignSlots = async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/appointments/available",
+				"appointments/available",
 				availableSlots
 			)
 
@@ -97,7 +97,7 @@ const AppointmentList = () => {
 	const handleCreateAppointment = async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/appointments/make-appointment",
+				"appointments/make-appointment",
 				createAppointment
 			)
 
