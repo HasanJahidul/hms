@@ -86,6 +86,7 @@ export function CreateOrUpdateUserForm({
 					department_id: 0,
 				})
 			}
+			
 		} catch (error) {
 			toast.error(error.response.data.message)
 		}

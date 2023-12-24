@@ -10,15 +10,9 @@ const PatientUpdate = () => {
 
 	const getPatientDetails = async id => {
 		try {
-<<<<<<< HEAD
-			const response = await apiService.get(`manager/patient?id=${id}`, {
-				withCredentials: true,
-			})
-=======
 			const response = await apiService.get(
 				`manager/patient?id=${id}`,
 			)
->>>>>>> 1c40292 (appoinment listing)
 			console.log("Patient Details", response)
 
 			if (response.status == 200) {
