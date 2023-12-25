@@ -85,10 +85,12 @@ export function CreateOrUpdateUserForm({
 					role_id: roleId,
 					department_id: 0,
 				})
+			} else {
+				toast.error("Failed to create user profile");
 			}
 			
 		} catch (error) {
-			toast.error(error.response.data.message)
+			toast.error(error.message)
 		}
 	}
 
@@ -124,7 +126,7 @@ export function CreateOrUpdateUserForm({
 		} catch (error) {
 			// Handle errors
 			console.error("Error updating user profile:", error)
-			toast.error("An error occurred while updating user profile")
+			toast.error(error.message);
 		}
 	}
 
