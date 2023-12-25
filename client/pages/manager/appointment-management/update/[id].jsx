@@ -16,7 +16,7 @@ const UpdateAppointment = () => {
 
       if (response.status == 200) {
         const availableAppointments = [];
-        response.data.availableAppointments.forEach((element, index) => {
+        response.data.doctor.availableAppointments.forEach((element, index) => {
           availableAppointments.push({
             id: element.id,
             dateTime: element.dateTime,
@@ -25,7 +25,7 @@ const UpdateAppointment = () => {
         const responseData = {
           doctorId: response.data.doctorId,
           patientId: response.data.patientId,
-          availableAppintmentId: response.data.availableAppointmentId,
+          availableAppointmentId: response.data.availableAppointmentId,
           doctorDetails: {
             id: response.data.doctor.id,
             email: response.data.doctor.email,
