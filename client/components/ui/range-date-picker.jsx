@@ -22,7 +22,7 @@ export function RangeDatePicker({ className, ...props }) {
 	return (
 		<div className={cn("grid gap-2", className)}>
 			<Popover>
-				<PopoverTrigger asChild className="bg-gray-700 dark:bg-slate-50 text-slate-500 dark:text-slate-900">
+				<PopoverTrigger asChild className="flex h-10 w-full bg-slate-50 text-sm text-slate-900 ring-offset-background placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border-2 border-gray-200 p-2 rounded-md">
 					<Button
 						id="date"
 						variant={"outline"}

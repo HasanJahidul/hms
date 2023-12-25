@@ -119,7 +119,7 @@ const signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md">
         {/* <div className="text-center mb-10">
           <h1 className="font-bold text-4xl bg-blue-600">HMS</h1>
@@ -127,22 +127,22 @@ const signup = () => {
             Welcome to HMS. Please Sign Up to continue.
           </p>
         </div> */}
-        <Card className="mx-auto w-full bg-[#ffffff] p-6 rounded-lg shadow-lg">
+        <Card className="mx-auto w-full dark:bg-slate-900 p-6 rounded-lg shadow-lg">
           <CardHeader className="space-y-4">
-            <CardTitle className="text-2xl bg-blue-600 text-center">
+            <CardTitle className="text-2xl py-1 bg-blue-600 text-center text-slate-50">
               Sign Up
             </CardTitle>
-            <CardDescription className="text-gray-500">
+            <CardDescription className="text-slate-50">
               Welcome to HMS. Please Sign Up to continue.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-black">
+              <Label htmlFor="name" className="">
                 Name
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.name ? "border-red-500" : ""
                 }`}
                 id="name"
@@ -155,11 +155,11 @@ const signup = () => {
               {errors.name && <p className="text-red-500">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-black">
+              <Label htmlFor="email" className="">
                 Email
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.email ? "border-red-500" : ""
                 }`}
                 id="email"
@@ -172,11 +172,11 @@ const signup = () => {
               {errors.email && <p className="text-red-500">{errors.email}</p>}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-black">
+              <Label htmlFor="password" className="">
                 Password
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.password ? "border-red-500" : ""
                 }`}
                 id="password"
@@ -184,6 +184,8 @@ const signup = () => {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
+                placeholder="min. 4 characters"
+
               />
               <button
                 type="button"
@@ -197,11 +199,11 @@ const signup = () => {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-black">
+              <Label htmlFor="confirmPassword" className="">
                 Confirm Password
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.confirmPassword ? "border-red-500" : ""
                 }`}
                 id="confirmPassword"
@@ -209,30 +211,32 @@ const signup = () => {
                 type={showPassword ? "text" : "password"}
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                placeholder="min. 4 characters"
+
               />
               <button
                 type="button"
                 className="text-blue-500 hover:text-blue-800 cursor-pointer"
                 onClick={toggleShowPassword}
               >
-                {showPassword ? "Hide" : "Show"} confirmPassword
+                {showPassword ? "Hide" : "Show"} Confirm Password
               </button>
               {errors.confirmPassword && (
                 <p className="text-red-500">{errors.confirmPassword}</p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="address" className="text-black">
+              <Label htmlFor="address" className="">
                 Address
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.address ? "border-red-500" : ""
                 }`}
                 id="address"
                 required
                 type="text"
-                placeholder="Address"
+                placeholder="Nashville, TN"
                 value={formData.address}
                 onChange={handleChange}
               />
@@ -241,11 +245,11 @@ const signup = () => {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-black">
+              <Label htmlFor="phone" className="">
                 Phone
               </Label>
               <Input
-                className={`border-2 border-gray-200 p-2 rounded-md text-black ${
+                className={`border-2 border-gray-200 p-2 rounded-md  ${
                   errors.phone ? "border-red-500" : ""
                 }`}
                 id="phone"

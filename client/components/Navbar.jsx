@@ -7,7 +7,7 @@ const Navbar = ({ setSidebarOpenStatus }) => {
 	const router = useRouter()
 
 	return (
-		<nav className="bg-white border-gray-200 dark:bg-gray-900">
+		<nav className="bg-slate-100 dark:bg-slate-900 border-b">
 			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 				<div className="flex space-x-2">
 					{hasCookie("role") && getCookie("role").toString() == "2" && (
@@ -54,7 +54,7 @@ const Navbar = ({ setSidebarOpenStatus }) => {
 							<li>
 								<Link
 									href={"/auth/login"}
-									className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+									className="text-blue-500 bg-slate-100 hover:bg-blue-700 hover:text-white rounded-md px-3 py-2"
 									aria-current="page"
 								>
 									Login
@@ -63,7 +63,7 @@ const Navbar = ({ setSidebarOpenStatus }) => {
 							{/* <li>
 								<Link
 									href={"/auth/signup"}
-									className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+									className="text-blue-500 bg-slate-100 hover:bg-blue-700 hover:text-white rounded-md px-3 py-2"
 									aria-current="page"
 								>
 									Sign Up
@@ -81,7 +81,7 @@ const Navbar = ({ setSidebarOpenStatus }) => {
 							>
 								<Link
 									href={"/auth/login"}
-									className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+									className="text-blue-500 hover:bg-blue-700 hover:text-white rounded-md px-3 py-2"
 									aria-current="page"
 								>
 									Logout

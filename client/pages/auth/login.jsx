@@ -71,7 +71,7 @@ export default function login() {
 	}
 
 	return (
-		<section className="flex grow items-center justify-center bg-gray-100">
+		<section className="flex grow items-center justify-center">
 			<div className="w-full max-w-md">
 				{/* <div className="text-center mb-20 space-y-4">
 					<h1 className="font-bold text-4xl bg-blue-600">HMS</h1>
@@ -79,22 +79,22 @@ export default function login() {
 						Welcome to HMS. Please login to continue.
 					</p>
 				</div> */}
-				<Card className="mx-auto w-full bg-[#ffffff] p-6 rounded-lg shadow-lg">
+				<Card className="mx-auto w-full dark:bg-slate-900 p-6 rounded-lg shadow-lg">
 					<CardHeader className="space-y-4">
-						<CardTitle className="text-2xl text-white bg-blue-600 text-center">
+						<CardTitle className="text-2xl py-1 bg-blue-600 text-center text-slate-50">
 							Login
 						</CardTitle>
-						<CardDescription className="text-gray-500">
+						<CardDescription className="text-slate-50">
 							Welcome to HMS. Please login to continue.
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="space-y-2">
-							<Label htmlFor="email" className="text-black">
+							<Label htmlFor="email" className="">
 								Email
 							</Label>
 							<Input
-								className="border-2 border-gray-200 p-2 rounded-md text-black"
+								className="border-2 border-gray-200 p-2 rounded-md "
 								id="email"
 								placeholder="john@example.com"
 								required
@@ -105,11 +105,11 @@ export default function login() {
 							/>
 						</div>
 						<div className="space-y-2">
-							<Label htmlFor="password" className="text-black">
+							<Label htmlFor="password" className="">
 								Password
 							</Label>
 							<Input
-								className="border-2 border-gray-200 p-2 rounded-md text-black"
+								className="border-2 border-gray-200 p-2 rounded-md "
 								id="password"
 								required
 								type="password"
