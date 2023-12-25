@@ -4,7 +4,14 @@ import Dropdown from "@/components/Dropdown"
 import { Button } from "@/components/ui/button"
 import Modal from "@/components/ui/modal"
 import { RangeDatePicker } from "@/components/ui/range-date-picker"
-import { eachDayOfInterval, format } from "date-fns"
+import {
+	eachDayOfInterval,
+	format,
+	addMinutes,
+	set,
+	getHours,
+	getMinutes,
+} from "date-fns"
 import {
 	Select,
 	SelectContent,
@@ -15,6 +22,8 @@ import {
 import { apiService } from "@/service"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { DatePicker } from "@/components/ui/date-picker"
+import { Input } from "@/components/ui/input"
 
 const AppointmentList = () => {
 	const [availableSlotsModalIsOpen, setAvailableSlotsModalIsOpen] =
@@ -24,9 +33,9 @@ const AppointmentList = () => {
 	const [appointmentList, setAllAppointmentList] = useState([])
 	const [doctorList, setAllDoctorList] = useState([])
 	const [patientList, setAllPatientList] = useState([])
-	const [availableSlots, setAvailableSlots] = useState({})
+	const [availableSlotsData, setAvailableSlotsData] = useState({})
 	const [createAppointment, setCreateAppointment] = useState({})
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(true)
 
 	const getAllAppointmentList = async () => {
 		try {
@@ -39,7 +48,7 @@ const AppointmentList = () => {
 		} catch (error) {
 			console.log("Error Fetching Appointment List:", error)
 			toast.error(error.response.data.message)
-		}finally{
+		} finally {
 			setLoading(false)
 		}
 	}
@@ -73,10 +82,48 @@ const AppointmentList = () => {
 	}
 
 	const handleAssignSlots = async () => {
+		console.log("availableSlots", availableSlotsData)
+
+		const { date, interval, doctorId, from, to } = availableSlotsData
+
+		const fromDate = new Date(from)
+		const toDate = new Date(to)
+
+		const start = set(date, {
+			hours: getHours(fromDate),
+			minutes: getMinutes(fromDate),
+		})
+
+		const end = set(date, {
+			hours: getHours(toDate),
+			minutes: getMinutes(toDate),
+		})
+
+		const slots = []
+
+		let current = start
+
+		while (current < end) {
+			slots.push({
+				dateTime: current.toISOString(),
+			})
+
+			// Increment by interval
+			current = addMinutes(current, Number(interval))
+		}
+
+		const formattedData = {
+			doctorId,
+			availableSlots: slots,
+		}
+
+		console.log("formattedData", formattedData)
+		// return
+
 		try {
 			const response = await apiService.post(
 				"appointments/available",
-				availableSlots
+				formattedData
 			)
 
 			console.log(response)
@@ -151,7 +198,7 @@ const AppointmentList = () => {
 
 			{/* // - appointment table */}
 			{loading ? (
-        		<div>Loading...</div>
+				<div>Loading...</div>
 			) : (
 				<AppointmentTable
 					data={
@@ -164,7 +211,7 @@ const AppointmentList = () => {
 									// 	date: "2021-10-10",
 									// 	time: "10:00 AM",
 									// },
-							]
+							  ]
 							: appointmentList
 					}
 				/>
@@ -176,7 +223,9 @@ const AppointmentList = () => {
 				setIsOpen={setCreateAppointmentModalIsOpen}
 			>
 				<div className="space-y-4 flex flex-col">
-					<h3 className="text-2xl text-slate-900 dark:text-slate-50">Create Appointments</h3>
+					<h3 className="text-2xl text-slate-900 dark:text-slate-50">
+						Create Appointments
+					</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
@@ -265,7 +314,7 @@ const AppointmentList = () => {
 											value={avAp.id}
 											className="text-slate-50"
 										>
-											{format(new Date(avAp.dateTime), "LLL dd, y")}
+											{format(new Date(avAp.dateTime), "LLL dd, y | hh:mm a")}
 										</SelectItem>
 									)
 								})}
@@ -287,12 +336,14 @@ const AppointmentList = () => {
 				setIsOpen={setAvailableSlotsModalIsOpen}
 			>
 				<div className="space-y-4 flex flex-col">
-					<h3 className="text-2xl text-slate-900 dark:text-slate-50">Assign Available Slots</h3>
+					<h3 className="text-2xl text-slate-900 dark:text-slate-50">
+						Assign Available Slots
+					</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
 
-							setAvailableSlots(prev => {
+							setAvailableSlotsData(prev => {
 								return {
 									...prev,
 									doctorId: val,
@@ -318,10 +369,17 @@ const AppointmentList = () => {
 						</SelectContent>
 					</Select>
 
-					<RangeDatePicker
+					<DatePicker
 						onChange={date => {
-							console.log("date range", date)
+							console.log("selected date", date)
 
+							setAvailableSlotsData(prev => {
+								return {
+									...prev,
+									date: date,
+								}
+							})
+							return
 							const dates = map(
 								eachDayOfInterval({ start: date?.from, end: date?.to }),
 								day => day.toISOString()
@@ -338,7 +396,7 @@ const AppointmentList = () => {
 
 							console.log("formattedDates", formattedDates)
 
-							setAvailableSlots(prev => {
+							setAvailableSlotsData(prev => {
 								return {
 									...prev,
 									availableSlots: formattedDates,
@@ -346,6 +404,61 @@ const AppointmentList = () => {
 							})
 						}}
 					/>
+
+					<Input
+						placeholder="Interval in minutes"
+						value={availableSlotsData.interval ?? ""}
+						onChange={e => {
+							const val = e.target.value
+							console.log("interval", val, isNaN(val))
+
+							// check if val is valid number
+							if (!isEmpty(val) && isNaN(val)) return
+
+							// only allow number inputs between 5-59
+							if (!isEmpty(val) && (val < 1 || val > 59)) return
+
+							setAvailableSlotsData(prev => {
+								return {
+									...prev,
+									interval: val,
+								}
+							})
+						}}
+					/>
+
+					<div className="grid grid-cols-2 gap-4">
+						<Input
+							placeholder="From"
+							type="time"
+							onChange={e => {
+								const val = e.target.valueAsNumber
+								console.log("from", val)
+
+								setAvailableSlotsData(prev => {
+									return {
+										...prev,
+										from: val,
+									}
+								})
+							}}
+						/>
+						<Input
+							placeholder="To"
+							type="time"
+							onChange={e => {
+								const val = e.target.valueAsNumber
+								console.log("to", val)
+
+								setAvailableSlotsData(prev => {
+									return {
+										...prev,
+										to: val,
+									}
+								})
+							}}
+						/>
+					</div>
 
 					<Button
 						className="w-32 ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
