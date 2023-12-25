@@ -38,7 +38,7 @@ export function CreateOrUpdateUserForm({
 				}))
 			}
 		} catch (error) {
-			toast.error(error.response.data.message)
+			toast.error(error.message)
 			console.error("Error Fetching Department List", error)
 		}
 	}
@@ -90,6 +90,7 @@ export function CreateOrUpdateUserForm({
 			}
 			
 		} catch (error) {
+			console.log("Error creating user", error)
 			toast.error(error.message)
 		}
 	}
