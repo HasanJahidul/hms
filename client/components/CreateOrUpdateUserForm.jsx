@@ -20,7 +20,7 @@ export function CreateOrUpdateUserForm({
 		address: "",
 		phone: "",
 		role_id: parseInt(roleId),
-		department_id: 0,
+		department_id: null,
 	})
 
 	// const departmentList = await apiService.getDepartmentList();
@@ -83,7 +83,7 @@ export function CreateOrUpdateUserForm({
 					address: "",
 					phone: "",
 					role_id: roleId,
-					department_id: 0,
+					department_id: null,
 				})
 			} else {
 				toast.error("Failed to create user profile");

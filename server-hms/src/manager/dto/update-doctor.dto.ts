@@ -8,6 +8,7 @@ import {
   Matches,
   IsNumber,
   IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
 
 export class UpdateDoctorDto {
@@ -23,6 +24,7 @@ export class UpdateDoctorDto {
   @Matches(/^[0-9]{11}$/)
   phone: string;
   @IsNumber()
+  @IsOptional()
   department_id: number;
   @IsNumber()
   @IsNotEmpty()
