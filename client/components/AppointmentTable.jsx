@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import { apiService } from "@/service";
 
 const AppointmentTable = ({ data = [] }) => {
-  const deleteAppointment = (appointmentId) => {
+
+  const deleteAppointment = async (appointmentId) => {
     try {
-      const response = apiService.delete(
+      const response = await apiService.delete(
         `appointments/delete?id=${appointmentId}`
       );
 
