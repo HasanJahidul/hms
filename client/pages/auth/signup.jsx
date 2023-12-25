@@ -102,12 +102,16 @@ const signup = () => {
           "http://localhost:3000/auth/signup",
           data
         );
-        if (response.status === 201 && response.data.status === 200) {
-          toast.success(response.data.message);
-          router.push("/auth/login");
+        console.log("Sign Up Log", response);
+        if (response.status === 201 || response.data.status === 200) {
+          toast.success("Sign Up Successful!");
+          setTimeout(() => {
+            router.push("/auth/login");
+          }, 1500);
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        console.log("Error Signup", error);
+        toast.error(error.message);
       }
     } else {
       toast.error("Form is invalid. Please try again.");
