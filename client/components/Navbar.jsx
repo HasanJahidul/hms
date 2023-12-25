@@ -54,7 +54,7 @@ const Navbar = ({ setSidebarOpenStatus }) => {
 							<li>
 								<Link
 									href={"/auth/login"}
-									className="text-blue-500 bg-slate-100 hover:bg-blue-700 hover:text-white rounded-md px-3 py-2"
+									className="text-blue-500 hover:bg-blue-700 hover:text-white rounded-md px-3 py-2"
 									aria-current="page"
 								>
 									Login

@@ -28,13 +28,17 @@ import { Input } from "@/components/ui/input"
 const AppointmentList = () => {
 	const [availableSlotsModalIsOpen, setAvailableSlotsModalIsOpen] =
 		useState(false)
-	const [createAppointmentModalIsOpen, setCreateAppointmentModalIsOpen] =
-		useState(false)
+	const [
+		createOrUpdateAppointmentModalIsOpen,
+		setCreateOrUpdateAppointmentModalIsOpen,
+	] = useState(false)
 	const [appointmentList, setAllAppointmentList] = useState([])
 	const [doctorList, setAllDoctorList] = useState([])
 	const [patientList, setAllPatientList] = useState([])
 	const [availableSlotsData, setAvailableSlotsData] = useState({})
-	const [createAppointment, setCreateAppointment] = useState({})
+	const [createOrUpdateAppointmentData, setCreateOrUpdateAppointmentData] =
+		useState({})
+	const [updateAppointmentId, setUpdateAppointmentId] = useState(null)
 	const [loading, setLoading] = useState(true)
 
 	const getAllAppointmentList = async () => {
@@ -142,14 +146,14 @@ const AppointmentList = () => {
 		try {
 			const response = await apiService.post(
 				"appointments/make-appointment",
-				createAppointment
+				createOrUpdateAppointmentData
 			)
 
 			console.log(response)
 
 			if (response.status == 201) {
 				toast.success(response.data.message)
-				setCreateAppointmentModalIsOpen(false)
+				setCreateOrUpdateAppointmentModalIsOpen(false)
 				return
 			}
 
@@ -160,11 +164,50 @@ const AppointmentList = () => {
 		}
 	}
 
+	const handleUpdateAppointment = async () => {
+		try {
+			const response = await apiService.put(
+				`appointments/update?id=${updateAppointmentId}`,
+				createOrUpdateAppointmentData
+			)
+
+			console.log(response)
+
+			if (response.status == 201) {
+				toast.success(response.data.message)
+				setCreateOrUpdateAppointmentModalIsOpen(false)
+				setUpdateAppointmentId(null)
+				return
+			}
+
+			toast.error(response.data.message.join(" | "))
+		} catch (error) {
+			console.log("Error Updating Appointment:", error)
+			toast.error(error.response.data.message.join(" | "))
+		}
+	}
+
 	useEffect(() => {
 		getAllAppointmentList()
 		getAllDoctorList()
 		getAllPatientList()
 	}, [])
+
+	useEffect(() => {
+		if (updateAppointmentId) {
+			const appointment = appointmentList.find(
+				ap => ap.id == updateAppointmentId
+			)
+
+			if (appointment) {
+				setCreateOrUpdateAppointmentData({
+					availableAppointmentId: appointment.availableAppointment.id,
+					doctorId: appointment.doctor.id,
+					patientId: appointment.patient.id,
+				})
+			}
+		}
+	}, [updateAppointmentId])
 
 	return (
 		<section className="container flex flex-col grow mt-10 space-y-8">
@@ -178,7 +221,7 @@ const AppointmentList = () => {
 						size="sm"
 						className="w-40 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
 						onClick={() => {
-							setCreateAppointmentModalIsOpen(true)
+							setCreateOrUpdateAppointmentModalIsOpen(true)
 						}}
 					>
 						Create Appointment
@@ -214,29 +257,35 @@ const AppointmentList = () => {
 							  ]
 							: appointmentList
 					}
+					setUpdateAppointmentId={setUpdateAppointmentId}
 				/>
 			)}
 
 			{/* // + create appointment modal */}
 			<Modal
-				isOpen={createAppointmentModalIsOpen}
-				setIsOpen={setCreateAppointmentModalIsOpen}
+				isOpen={createOrUpdateAppointmentModalIsOpen || updateAppointmentId}
+				setIsOpen={() => {
+					setCreateOrUpdateAppointmentData({})
+					setCreateOrUpdateAppointmentModalIsOpen(false)
+					setUpdateAppointmentId(null)
+				}}
 			>
 				<div className="space-y-4 flex flex-col">
 					<h3 className="text-2xl text-slate-900 dark:text-slate-50">
-						Create Appointments
+						{updateAppointmentId ? "Update" : "Create"} Appointment
 					</h3>
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
 
-							setCreateAppointment(prev => {
+							setCreateOrUpdateAppointmentData(prev => {
 								return {
 									...prev,
 									patientId: val,
 								}
 							})
 						}}
+						value={createOrUpdateAppointmentData.patientId}
 					>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Select a patient" />
@@ -260,13 +309,14 @@ const AppointmentList = () => {
 						onValueChange={val => {
 							console.log("doc id", val)
 
-							setCreateAppointment(prev => {
+							setCreateOrUpdateAppointmentData(prev => {
 								return {
 									...prev,
 									doctorId: val,
 								}
 							})
 						}}
+						value={createOrUpdateAppointmentData.doctorId}
 					>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Select a doctor" />
@@ -290,13 +340,14 @@ const AppointmentList = () => {
 						onValueChange={val => {
 							console.log("doc id", val)
 
-							setCreateAppointment(prev => {
+							setCreateOrUpdateAppointmentData(prev => {
 								return {
 									...prev,
 									availableAppointmentId: val,
 								}
 							})
 						}}
+						value={createOrUpdateAppointmentData.availableAppointmentId}
 					>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Select an available date" />
@@ -305,7 +356,7 @@ const AppointmentList = () => {
 							{!isEmpty(doctorList) &&
 								doctorList[
 									doctorList.findIndex(
-										doc => doc.id == createAppointment.doctorId
+										doc => doc.id == createOrUpdateAppointmentData.doctorId
 									)
 								]?.availableAppointments?.map(avAp => {
 									return (
@@ -323,9 +374,13 @@ const AppointmentList = () => {
 
 					<Button
 						className="w-32 ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-						onClick={handleCreateAppointment}
+						onClick={
+							updateAppointmentId
+								? handleUpdateAppointment
+								: handleCreateAppointment
+						}
 					>
-						Create
+						{updateAppointmentId ? "Update" : "Create"}
 					</Button>
 				</div>
 			</Modal>
