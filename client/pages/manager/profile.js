@@ -1,4 +1,5 @@
 import { CreateOrUpdateUserForm } from "@/components/CreateOrUpdateUserForm";
+import UploadImageFile from "@/components/UploadImageFile";
 import { apiService } from "@/service";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -19,8 +20,8 @@ const ManagerProfile = () => {
           userAddress: response.data.userDetails.address,
           userPhone: response.data.userDetails.phone,
           userAvatar:
-            response.data.message.userDetails.avatar != null
-              ? `http://localhost:3000/${response.data.message.userDetails.avatar}`
+            response.data.userDetails.avatar != null
+              ? `http://localhost:3000/${response.data.userDetails.avatar}`
               : null,
           email: response.data.email,
           isActive: response.data.is_active,
@@ -33,7 +34,7 @@ const ManagerProfile = () => {
         setData(data);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
       console.error("Error fetching manager profile:", error);
     }
   };
