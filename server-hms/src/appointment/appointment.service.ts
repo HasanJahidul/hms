@@ -26,6 +26,13 @@ export class AppointmentService {
   // getAllAppointments() {
   //   return this.appointmentRepository.find();
   // }
+  async deleteAvailableAppointment(id: number) {
+    await this.appointmentRepository.delete(id);
+    return new ResponseHandler(
+      'Appointment deleted successfully',
+      HttpStatus.OK,
+    );
+  }
   async getAllAppointments() {
     return this.appointmentRepository.find({
       relations: ['doctor', 'patient', 'availableAppointment'],
@@ -64,12 +71,27 @@ export class AppointmentService {
     console.log('createAppointment', appointment);
     // const newAppointment = this.appointmentRepository.create(appointment);
     await this.appointmentRepository.save(appointment);
+    avap.is_available = false;
+    await this.availableAppointmentRepository.save(avap);
     return new ResponseHandler('Appointment made successfully', HttpStatus.OK);
   }
 
-  updateAppointment(updateAppointmentDto: UpdateAppointmentDto) {
-    const id = updateAppointmentDto.id;
-    return this.appointmentRepository.update(id, updateAppointmentDto);
+  async updateAppointment(
+    id: number,
+    updateAppointmentDto: UpdateAppointmentDto,
+  ) {
+    // const id = updateAppointmentDto.id;
+    const update = await this.appointmentRepository.update(
+      id,
+      updateAppointmentDto,
+    );
+    if (!update) {
+      throw new NotFoundException('Appointment not found');
+    }
+    return new ResponseHandler(
+      'Appointment updated successfully',
+      HttpStatus.OK,
+    );
   }
 
   async deleteAppointment(id: number) {

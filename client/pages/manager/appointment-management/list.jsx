@@ -152,6 +152,7 @@ const AppointmentList = () => {
 			console.log(response)
 
 			if (response.status == 201) {
+				getAllAppointmentList();
 				toast.success(response.data.message)
 				setCreateOrUpdateAppointmentModalIsOpen(false)
 				return
@@ -173,17 +174,19 @@ const AppointmentList = () => {
 
 			console.log(response)
 
-			if (response.status == 201) {
+			if (response.status == 200) {
 				toast.success(response.data.message)
+				getAllAppointmentList();
 				setCreateOrUpdateAppointmentModalIsOpen(false)
 				setUpdateAppointmentId(null)
+				toast.error(response.data.message.join(" | "))
 				return
 			}
 
-			toast.error(response.data.message.join(" | "))
+			
 		} catch (error) {
 			console.log("Error Updating Appointment:", error)
-			toast.error(error.response.data.message.join(" | "))
+			// toast.error(error.response.data.message.join(" | "))
 		}
 	}
 
@@ -204,6 +207,7 @@ const AppointmentList = () => {
 					availableAppointmentId: appointment.availableAppointment.id,
 					doctorId: appointment.doctor.id,
 					patientId: appointment.patient.id,
+					id: appointment.id,
 				})
 			}
 		}
@@ -486,6 +490,7 @@ const AppointmentList = () => {
 						<Input
 							placeholder="From"
 							type="time"
+							defaultValue="12:00"
 							onChange={e => {
 								const val = e.target.valueAsNumber
 								console.log("from", val)
@@ -501,6 +506,7 @@ const AppointmentList = () => {
 						<Input
 							placeholder="To"
 							type="time"
+							defaultValue="12:00"
 							onChange={e => {
 								const val = e.target.valueAsNumber
 								console.log("to", val)

@@ -25,6 +25,6 @@ export class UpdateAppointmentDto {
   id: number;
 
   @IsOptional()
-  @IsDateString()
-  dateTime?: Date;
+  @IsNumber()
+  availableAppointmentId?: number;
 }

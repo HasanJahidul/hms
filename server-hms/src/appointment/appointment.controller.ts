@@ -35,8 +35,11 @@ export class AppointmentController {
   }
 
   @Put('update')
-  updateAppointment(@Body() updateAppointmentDto: UpdateAppointmentDto) {
-    return this.appointmentService.updateAppointment(updateAppointmentDto);
+  updateAppointment(
+    @Query('id') id: number,
+    @Body() updateAppointmentDto: UpdateAppointmentDto,
+  ) {
+    return this.appointmentService.updateAppointment(id, updateAppointmentDto);
   }
 
   @Delete(':id')
@@ -50,5 +53,9 @@ export class AppointmentController {
   @Get('/available')
   getAvailableAppointments(@Query('doctorId') doctorId: number) {
     return this.appointmentService.getAvailableAppointments(doctorId);
+  }
+  @Delete('/delete/avalable')
+  deleteAvailableAppointment(@Query('id') id: number) {
+    return this.appointmentService.deleteAvailableAppointment(id);
   }
 }

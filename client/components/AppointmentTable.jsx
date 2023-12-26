@@ -1,6 +1,6 @@
 import { format } from "date-fns"
 import { Button } from "./ui/button"
-import { isEmpty } from "lodash"
+import { isEmpty, set } from "lodash"
 import { toast } from "react-toastify"
 import { apiService } from "@/service"
 import Modal from "./ui/modal"
@@ -12,11 +12,14 @@ const AppointmentTable = ({ data = [], setUpdateAppointmentId }) => {
 	const deleteAppointment = async appointmentId => {
 		try {
 			const response = await apiService.delete(
-				`appointments/delete?id=${appointmentId}`
+				`appointments/delete/avalable?id=${appointmentId}`
 			)
 
 			if (response.status === 201 || response.data.status === 200) {
 				toast.success(response.data.message)
+				setDeleteAppointmentId(null)
+				setTimeout(() => {window.location.reload()}, 1000)
+				
 			} else {
 				toast.error("Error Deleting Appointment")
 			}
