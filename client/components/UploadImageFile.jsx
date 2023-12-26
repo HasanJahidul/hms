@@ -1,10 +1,12 @@
 import { apiService } from "@/service";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from 'next/router';
 
 const UploadImageFile = ({ userId, existingImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
+  const router = useRouter();
 
   const fetchImageData = async (imageSrc) => {
     try {
@@ -38,7 +40,11 @@ const UploadImageFile = ({ userId, existingImage }) => {
       console.log("Upload User Image Log", response);
 
       if (response.status == 201 || response.data.status == 200) {
-        toast.success(response.message);
+        toast.success(response.data.message);
+        setTimeout(() => {
+          router.back();
+        }
+        , 2000);
       } else {
         toast.error(response.message);
       }

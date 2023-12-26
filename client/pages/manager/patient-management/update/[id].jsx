@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { apiService } from "@/service";
+import UploadImageFile from "@/components/UploadImageFile";
 
 const PatientUpdate = () => {
   const router = useRouter();
   const [data, setData] = useState(null);
+
 
   const getPatientDetails = async (id) => {
     try {

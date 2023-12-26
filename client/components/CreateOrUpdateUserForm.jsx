@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { apiService } from "@/service"
+import { useRouter } from "next/router"
+
 
 export function CreateOrUpdateUserForm({
 	formTitle,
@@ -22,6 +24,7 @@ export function CreateOrUpdateUserForm({
 		role_id: parseInt(roleId),
 		department_id: null,
 	})
+	const router = useRouter();
 
 	// const departmentList = await apiService.getDepartmentList();
 	const [departmentList, setDepartmentList] = useState([])
@@ -85,6 +88,10 @@ export function CreateOrUpdateUserForm({
 					role_id: roleId,
 					department_id: null,
 				})
+				setTimeout(() => {
+					router.back();
+				}, 2000)
+
 			} else {
 				toast.error("Failed to create user profile");
 			}
@@ -120,6 +127,9 @@ export function CreateOrUpdateUserForm({
 							: "User"
 					} Successfully!`
 				)
+				setTimeout(() => {
+					router.back();
+				}, 2000)
 			} else {
 				// Handle other response statuses or display an error message
 				toast.error("Failed to update user profile")

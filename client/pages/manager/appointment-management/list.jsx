@@ -40,6 +40,9 @@ const AppointmentList = () => {
 		useState({})
 	const [updateAppointmentId, setUpdateAppointmentId] = useState(null)
 	const [loading, setLoading] = useState(true)
+	const [availableAppointments, setAvailableAppointments] = useState([]); // for dropdown
+	const [canCreateAppointment, setCanCreateAppointment] = useState(false);
+
 
 	const getAllAppointmentList = async () => {
 		try {
@@ -49,6 +52,18 @@ const AppointmentList = () => {
 			if (response.status == 200) {
 				setAllAppointmentList(response.data)
 			}
+		} catch (error) {
+			console.log("Error Fetching Appointment List:", error)
+			toast.error(error.response.data.message)
+		} finally {
+			setLoading(false)
+		}
+	}
+	const getAppointMentListByDoctorId = async (doctorId) => {
+		try {
+			const response = await apiService.get(`appointments/available?doctorId=${doctorId}`)
+			console.log(response)
+			setAvailableAppointments(response.data)
 		} catch (error) {
 			console.log("Error Fetching Appointment List:", error)
 			toast.error(error.response.data.message)
@@ -251,13 +266,7 @@ const AppointmentList = () => {
 					data={
 						isEmpty(appointmentList)
 							? [
-									// {
-									// 	appointmentId: "1",
-									// 	doctorName: "Md. Shafayet Kabir",
-									// 	patientName: "Sobhan Ahmed",
-									// 	date: "2021-10-10",
-									// 	time: "10:00 AM",
-									// },
+									
 							  ]
 							: appointmentList
 					}
@@ -312,7 +321,7 @@ const AppointmentList = () => {
 					<Select
 						onValueChange={val => {
 							console.log("doc id", val)
-
+							getAppointMentListByDoctorId(val)
 							setCreateOrUpdateAppointmentData(prev => {
 								return {
 									...prev,
@@ -341,40 +350,46 @@ const AppointmentList = () => {
 					</Select>
 
 					<Select
-						onValueChange={val => {
-							console.log("doc id", val)
+						onValueChange={(val) => {
+							console.log("doc id", val);
 
-							setCreateOrUpdateAppointmentData(prev => {
-								return {
-									...prev,
-									availableAppointmentId: val,
-								}
-							})
+							setCreateOrUpdateAppointmentData((prev) => {
+							return {
+								...prev,
+								availableAppointmentId: val,
+							};
+							});
 						}}
 						value={createOrUpdateAppointmentData.availableAppointmentId}
-					>
+						>
 						<SelectTrigger className="w-full">
+							{(!availableAppointments || availableAppointments.length === 0) ? (
+							<SelectValue placeholder = "No available appointments" disabled>
+								No available appointments
+							</SelectValue>
+							) : (
 							<SelectValue placeholder="Select an available date" />
+							)}
 						</SelectTrigger>
 						<SelectContent>
-							{!isEmpty(doctorList) &&
-								doctorList[
-									doctorList.findIndex(
-										doc => doc.id == createOrUpdateAppointmentData.doctorId
-									)
-								]?.availableAppointments?.map(avAp => {
-									return (
-										<SelectItem
-											key={avAp.id}
-											value={avAp.id}
-											className="text-slate-50"
-										>
-											{format(new Date(avAp.dateTime), "LLL dd, y | hh:mm a")}
-										</SelectItem>
-									)
-								})}
+							{availableAppointments ? (
+							availableAppointments.map((avAp) => (
+								<SelectItem
+								key={avAp.id}
+								value={avAp.id}
+								className="text-slate-50"
+								>
+								{format(new Date(avAp.dateTime), "LLL dd, y | hh:mm a")}
+								</SelectItem>
+							))
+							) : (
+							<SelectItem disabled>
+								No available appointments
+							</SelectItem>
+							)}
 						</SelectContent>
 					</Select>
+
 
 					<Button
 						className="w-32 ml-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

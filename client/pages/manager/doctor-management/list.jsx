@@ -3,6 +3,7 @@ import { apiService } from "@/service";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import {baseUrl } from "../../../const";
 // import { apiService } from "../../../service";
 
 const DoctorList = () => {
@@ -23,7 +24,7 @@ const DoctorList = () => {
             userPhone: element.userDetails.phone,
             userAvatar:
               element.userDetails.avatar != null
-                ? `http://localhost:3000/element.userDetails.avatar`
+                ? baseUrl + element.userDetails.avatar
                 : null,
             email: element.email,
             isActive: element.is_active,

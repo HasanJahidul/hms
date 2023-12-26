@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { apiService } from "@/service";
 import UploadImageFile from "@/components/UploadImageFile";
+import {baseUrl } from "../../../../const";
 
 const UpdateDoctor = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const UpdateDoctor = () => {
           userPhone: response.data.message.userDetails.phone,
           userAvatar:
             response.data.message.userDetails.avatar != null
-              ? `http://localhost:3000/${response.data.message.userDetails.avatar}`
+              ? baseUrl+response.data.message.userDetails.avatar
               : null,
           email: response.data.message.email,
           isActive: response.data.message.is_active,
